@@ -9,7 +9,7 @@ export default async function Home() {
 
     return (
         <>
-            <NavBar Session={session}></NavBar>
+            <NavBar hasSession={session !== null}></NavBar>
             {session ? (
                 <h1 className="text-slate-900">You are logged in</h1>
             ) : (

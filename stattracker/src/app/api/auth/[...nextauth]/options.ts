@@ -5,7 +5,7 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export const options: NextAuthOptions = {
+export const authOptions: NextAuthOptions = {
     adapter: PrismaAdapter(prisma),
     providers: [
         GoogleProvider({
@@ -13,6 +13,13 @@ export const options: NextAuthOptions = {
             clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
         }),
     ],
+    callbacks: {
+        async session({ session, token, user }) {
+            // Send properties to the client, like an access_token from a provider.
+            session.user.id = user.id;
+            return session;
+        },
+    },
 };
 
 export default prisma;

@@ -1,11 +1,18 @@
-import { Session } from 'inspector';
+'use client';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 type NavbarProps = {
     hasSession: boolean;
 };
 
 export default function NavBar(props: NavbarProps) {
+    const pathname = usePathname();
+
+    if (pathname === '/CreatePlayer') {
+        return <></>;
+    }
+
     return (
         <>
             <nav className="col-span-8">
@@ -14,7 +21,7 @@ export default function NavBar(props: NavbarProps) {
                     {props.hasSession ? (
                         <Link href="/api/auth/signout">Log out</Link>
                     ) : (
-                        <Link href="/api/auth/signin?callbackUrl=/profile">
+                        <Link href="/api/auth/signin?callbackUrl=/Profile">
                             Login
                         </Link>
                     )}

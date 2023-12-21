@@ -1,15 +1,11 @@
-import NavBar from '@/Components/NavBar';
 import { getServerSession } from 'next-auth';
-import { options } from './api/auth/[...nextauth]/options';
-import Image from 'next/image';
-import { redirect } from 'next/navigation';
+import { authOptions } from './api/auth/[...nextauth]/options';
 
 export default async function Home() {
-    const session = await getServerSession(options);
+    const session = await getServerSession(authOptions);
 
     return (
         <>
-            <NavBar hasSession={session !== null}></NavBar>
             {session ? (
                 <h1 className="text-slate-900">You are logged in</h1>
             ) : (

@@ -72,3 +72,9 @@ ALTER TABLE "players" ADD CONSTRAINT "fk_shooting_side" FOREIGN KEY ("shooting_s
 -- AddForeignKey
 ALTER TABLE "players" ADD CONSTRAINT "fk_userid" FOREIGN KEY ("userid") REFERENCES "users"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
+-- InsertIntoTable
+insert into shooting_side (id, side)
+values
+  (1, 'Not Specified'),
+  (2, 'Right'),
+  (3, 'Left')

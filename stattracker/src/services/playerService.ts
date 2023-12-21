@@ -12,6 +12,9 @@ export default class PlayerService {
                     },
                 },
             },
+            where: {
+                userid: userId,
+            },
         });
     }
 }

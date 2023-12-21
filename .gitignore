@@ -1,0 +1,36 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/stattracker/node_modules
+/stattracker/.pnp
+/stattracker/.pnp.js
+/stattracker/.yarn/install-state.gz
+
+# testing
+/stattracker/coverage
+
+# next.js
+/stattracker/.next/
+/stattracker/out/
+
+# production
+/stattracker/build
+
+# misc
+/stattracker/.DS_Store
+/stattracker/*.pem
+
+# debug
+/stattracker/npm-debug.log*
+/stattracker/stattracker/yarn-debug.log*
+/stattracker/yarn-error.log*
+
+# local env files
+/stattracker/.env
+
+# vercel
+./stattracker/vercel
+
+# typescript
+/stattracker/*.tsbuildinfo
+/stattracker/next-env.d.ts

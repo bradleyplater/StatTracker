@@ -1,23 +1,29 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Jost } from 'next/font/google';
 import './globals.css';
+import NavBar from '@/Components/NavBar';
+import { getServerSession } from 'next-auth';
+import { authOptions } from './api/auth/[...nextauth]/options';
 
-const inter = Inter({ subsets: ['latin'] });
+const jost = Jost({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
     title: 'Stat Tracker',
 };
 
-export default function RootLayout({
+export default async function RootLayout({
     children,
 }: {
     children: React.ReactNode;
 }) {
+    const session = await getServerSession(authOptions);
+
     return (
         <html lang="en">
             <body
-                className={`${inter.className} text-slate-100 w-screen grid grid-cols-8 gap-4`}
+                className={`${jost.className} text-slate-100 w-screen grid grid-cols-8 gap-4`}
             >
+                <NavBar hasSession={session !== null}></NavBar>
                 {children}
             </body>
         </html>

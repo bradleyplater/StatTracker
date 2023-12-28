@@ -11,11 +11,17 @@ export default class PlayerService {
             },
         });
 
+        if (response == null) return null;
+
         const player = {
             id: response?.id,
             firstName: response?.firstName,
             surname: response?.surname,
             shootingSide: response?.shooting_side,
+            goals: response?.goals,
+            assists: response?.assists,
+            gamesPlayed: response?.gamesPlayed,
+            pims: response?.pims,
             userId: response?.userid,
         } as Player;
 

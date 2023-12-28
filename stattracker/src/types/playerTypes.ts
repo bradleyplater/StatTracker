@@ -1,11 +1,16 @@
 import { ShootingSide } from '@/enums/ShootingSide';
+import { LargeNumberLike } from 'crypto';
 import { z } from 'zod';
 
 export type Player = {
-    id: string;
+    id: number;
     firstName: string;
     surname: string;
     shootingSide: ShootingSide;
+    goals: number;
+    assists: number;
+    gamesPlayed: number;
+    pims: number;
     userId: string;
 };
 

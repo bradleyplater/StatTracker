@@ -13,6 +13,10 @@ model players {
   userid                                             String?
   firstName                                          String?
   surname                                            String?
+  goals                                              Int?
+  assists                                            Int?
+  gamesPlayed                                        Int?
+  pims                                               Int?
   shooting_side_players_shooting_sideToshooting_side shooting_side? @relation("players_shooting_sideToshooting_side", fields: [shooting_side], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_shooting_side")
   user                                               User?          @relation(fields: [userid], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_userid")
 }

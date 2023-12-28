@@ -34,6 +34,10 @@ export async function createPlayerInDb(prevState: any, formData: FormData) {
                 surname: playerData.surname,
                 shooting_side: parseInt(playerData.shootingSide.toString()),
                 userid: session?.user.id,
+                goals: 0,
+                assists: 0,
+                gamesPlayed: 0,
+                pims: 0,
             },
         });
     } catch (error) {

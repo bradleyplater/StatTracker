@@ -10,8 +10,6 @@ import { useFormState } from 'react-dom';
 export default function CreatePlayer() {
     const [state, formAction] = useFormState(createPlayerInDb, null);
 
-    console.log('loaded createPlayer');
-
     return (
         <>
             <div className="col-span-8 h-screen flex justify-center items-center bg-[url('/hockeyPlayers.jpg')] bg-center bg-cover">

@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 export type Team = {
+    id: string;
     name: string;
     admins: string[];
 };

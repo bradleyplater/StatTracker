@@ -1,9 +1,9 @@
 'use server';
 
 import prisma, { authOptions } from '@/app/api/auth/[...nextauth]/options';
+import TeamService from '@/services/teamService';
 import { Team, teamValidation } from '@/types/teamTypes';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
-import { getServerSession } from 'next-auth';
+import { Session, getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 
 export async function createTeamInDb(prevState: any, formData: FormData) {
@@ -31,11 +31,7 @@ export async function createTeamInDb(prevState: any, formData: FormData) {
     let id = 'TM' + generateRandom6DigitNumber();
 
     while (idIsInDB && iteration <= 5) {
-        const team = await prisma.teams.findFirst({
-            where: {
-                id: id,
-            },
-        });
+        const team = await TeamService.FindTeamById(id);
 
         if (team != null) {
             console.log(`iteration ${iteration}: id already in use ${id}`);
@@ -43,24 +39,24 @@ export async function createTeamInDb(prevState: any, formData: FormData) {
             iteration++;
         } else {
             idIsInDB = false;
+            teamData.id = id;
         }
     }
 
-    try {
-        await prisma.teams.create({
-            data: {
-                id: id,
-                name: teamData.name,
-                admins: {
-                    connect: { id: session?.user.id as string },
-                },
-            },
-        });
-    } catch (error: any) {
-        console.log('Creating new team failed: ', error);
-
+    if (idIsInDB) {
         redirect('/Error');
     }
+
+    const response = await TeamService.CreateTeam(teamData, session as Session);
+
+    if (typeof response != 'string') {
+        return {
+            errors: {
+                name: [response.error],
+            },
+        };
+    }
+
     redirect('/Team');
 }
 

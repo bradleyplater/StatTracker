@@ -1,7 +1,6 @@
 'use client';
 import SubmitButton from '@/Components/SubmitButton';
 import { createTeamInDb } from '@/actions/teamActions';
-import { useState } from 'react';
 import { useFormState } from 'react-dom';
 
 export default function CreateTeam() {
@@ -31,6 +30,8 @@ export default function CreateTeam() {
                             name="teamName"
                             className="border-b  border-slate-500"
                         ></input>
+                    </div>
+                    <div>
                         {state?.errors ? (
                             state.errors.name?.map((error, key) => {
                                 return (

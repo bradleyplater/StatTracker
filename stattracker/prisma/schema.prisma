@@ -21,6 +21,12 @@ model players {
   user                                               User?          @relation(fields: [userid], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_userid")
 }
 
+model teams {
+  id                                                String          @id
+  name                                              String          @unique
+  admins                                            User[]
+}
+
 model sessions {
   id           Int      @id @default(autoincrement())
   userId       Int
@@ -70,6 +76,8 @@ model User {
   accounts      Account[]
   sessions      Session[]
   players       players[]
+  teamId        String?   
+  adminTeams    teams?    @relation(fields: [teamId], references: [id])
 }
 
 model VerificationToken {

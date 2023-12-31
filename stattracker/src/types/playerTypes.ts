@@ -1,5 +1,4 @@
 import { ShootingSide } from '@/enums/ShootingSide';
-import { LargeNumberLike } from 'crypto';
 import { z } from 'zod';
 
 export type Player = {

@@ -7,6 +7,24 @@ import { redirect } from 'next/navigation';
 export default class TeamService {
     constructor() {}
 
+    static async GetAllTeams(): Promise<Team[]> {
+        const response = await prisma.teams.findMany({
+            include: { admins: true },
+        });
+
+        const teams = [] as Team[];
+
+        response.forEach((team) => {
+            teams.push({
+                id: team.id,
+                name: team?.name as string,
+                admins: team?.admins.map((admin) => admin.id),
+            });
+        });
+
+        return teams;
+    }
+
     static async FindTeamById(id: string): Promise<Team | null> {
         const response = await prisma.teams.findFirst({
             where: {

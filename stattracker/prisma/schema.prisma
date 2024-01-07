@@ -7,7 +7,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model players {
+model Players {
   id                                                 Int            @id @default(autoincrement())
   shooting_side                                      Int?
   userid                                             String?
@@ -17,27 +17,39 @@ model players {
   assists                                            Int?
   gamesPlayed                                        Int?
   pims                                               Int?
-  shooting_side_players_shooting_sideToshooting_side shooting_side? @relation("players_shooting_sideToshooting_side", fields: [shooting_side], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_shooting_side")
-  user                                               User?          @relation(fields: [userid], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_userid")
+  teams                                              PlayersInTeams[]
+  shooting_side_id                                   Shooting_side? @relation(fields: [shooting_side], references: [id])
+  user                                               User?          @relation(fields: [userid], references: [id])
 }
 
-model teams {
+model PlayersInTeams {
+  player                                            Players          @relation(fields: [playerId], references: [id])
+  playerId                                          Int
+  team                                              Teams            @relation(fields: [teamId], references: [id])
+  teamId                                            String
+  playerNumber                                      Int?             @unique
+
+  @@id([playerId, teamId])
+}
+
+model Teams {
   id                                                String          @id
   name                                              String          @unique
   admins                                            User[]
-}
+  players                                           PlayersInTeams[]
+} 
 
-model sessions {
+model Sessions {
   id           Int      @id @default(autoincrement())
   userId       Int
   expires      DateTime @db.Timestamptz(6)
   sessionToken String   @db.VarChar(255)
 }
 
-model shooting_side {
-  id                                           Int       @id
-  side                                         String    @unique @db.VarChar(255)
-  players_players_shooting_sideToshooting_side players[] @relation("players_shooting_sideToshooting_side")
+model Shooting_side {
+  id                                           Int           @id
+  side                                         String        @unique @db.VarChar(255)
+  players                                      Players[]     
 }
 
 model Account {
@@ -75,9 +87,9 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
-  players       players[]
+  players       Players[]
   teamId        String?   
-  adminTeams    teams?    @relation(fields: [teamId], references: [id])
+  adminTeams    Teams?    @relation(fields: [teamId], references: [id])
 }
 
 model VerificationToken {

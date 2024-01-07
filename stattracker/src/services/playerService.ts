@@ -27,4 +27,26 @@ export default class PlayerService {
 
         return player;
     }
+
+    static async GetAllPlayers() {
+        const response = await prisma.players.findMany();
+
+        const players = [] as Player[];
+
+        response.forEach((player) => {
+            players.push({
+                id: player?.id,
+                firstName: player?.firstName,
+                surname: player?.surname,
+                shootingSide: player?.shooting_side,
+                goals: player?.goals,
+                assists: player?.assists,
+                gamesPlayed: player?.gamesPlayed,
+                pims: player?.pims,
+                userId: player?.userid,
+            } as Player);
+        });
+
+        return players;
+    }
 }

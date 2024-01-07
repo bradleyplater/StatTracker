@@ -1,15 +1,24 @@
 import prisma from '@/app/api/auth/[...nextauth]/options';
+import { Player } from '@/types/playerTypes';
 import { Team } from '@/types/teamTypes';
 import { Prisma } from '@prisma/client';
 import { Session } from 'next-auth';
 import { redirect } from 'next/navigation';
+import internal from 'stream';
 
 export default class TeamService {
     constructor() {}
 
     static async GetAllTeams(): Promise<Team[]> {
         const response = await prisma.teams.findMany({
-            include: { admins: true },
+            include: {
+                admins: true,
+                players: {
+                    include: {
+                        player: true,
+                    },
+                },
+            },
         });
 
         const teams = [] as Team[];
@@ -19,6 +28,20 @@ export default class TeamService {
                 id: team.id,
                 name: team?.name as string,
                 admins: team?.admins.map((admin) => admin.id),
+                players: team.players.map((player) => {
+                    return {
+                        id: player?.player.id,
+                        number: player.playerNumber,
+                        firstName: player?.player.firstName,
+                        surname: player?.player.surname,
+                        shootingSide: player?.player.shooting_side,
+                        goals: player?.player.goals,
+                        assists: player?.player.assists,
+                        gamesPlayed: player?.player.gamesPlayed,
+                        pims: player?.player.pims,
+                        userId: player?.player.userid,
+                    } as Player;
+                }),
             });
         });
 
@@ -32,6 +55,11 @@ export default class TeamService {
             },
             include: {
                 admins: true,
+                players: {
+                    include: {
+                        player: true,
+                    },
+                },
             },
         });
 
@@ -40,6 +68,20 @@ export default class TeamService {
                 id: response.id,
                 name: response?.name as string,
                 admins: response?.admins.map((admin) => admin.id),
+                players: response.players.map((player) => {
+                    return {
+                        id: player?.player.id,
+                        number: player.playerNumber,
+                        firstName: player?.player.firstName,
+                        surname: player?.player.surname,
+                        shootingSide: player?.player.shooting_side,
+                        goals: player?.player.goals,
+                        assists: player?.player.assists,
+                        gamesPlayed: player?.player.gamesPlayed,
+                        pims: player?.player.pims,
+                        userId: player?.player.userid,
+                    } as Player;
+                }),
             } as Team;
         } else {
             return null;
@@ -73,5 +115,29 @@ export default class TeamService {
             }
             redirect('/Error');
         }
+    }
+
+    static async AddPlayer(
+        teamId: string,
+        playerId: number,
+        playerNumber: number
+    ) {
+        await prisma.teams.update({
+            where: {
+                id: teamId,
+            },
+            data: {
+                players: {
+                    create: [
+                        {
+                            player: {
+                                connect: { id: playerId },
+                            },
+                            playerNumber: playerNumber,
+                        },
+                    ],
+                },
+            },
+        });
     }
 }

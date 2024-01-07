@@ -1,8 +1,9 @@
 'use server';
 
+import Teams from '@/app/Teams/page';
 import prisma, { authOptions } from '@/app/api/auth/[...nextauth]/options';
 import TeamService from '@/services/teamService';
-import { Team, teamValidation } from '@/types/teamTypes';
+import { Team, addPlayerValidation, teamValidation } from '@/types/teamTypes';
 import { Session, getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 
@@ -58,6 +59,36 @@ export async function createTeamInDb(prevState: any, formData: FormData) {
     }
 
     redirect('/Team');
+}
+
+export async function addPlayerToTeamAction(
+    prevState: any,
+    formData: FormData
+) {
+    const teamAndPlayer = {
+        teamId: formData.get('teamId') as string,
+        playerId: parseInt(formData.get('playerId') as string),
+        playerNumber: parseInt(formData.get('playerNumber') as string),
+    };
+
+    const validatedFields = addPlayerValidation.safeParse(teamAndPlayer);
+
+    if (!validatedFields.success) {
+        console.log(
+            'Model State is not valid:',
+            validatedFields.error.flatten().fieldErrors
+        );
+
+        redirect('/Error');
+    }
+
+    await TeamService.AddPlayer(
+        teamAndPlayer.teamId,
+        teamAndPlayer.playerId,
+        teamAndPlayer.playerNumber
+    );
+
+    redirect(`/Teams/${teamAndPlayer.teamId}`);
 }
 
 function generateRandom6DigitNumber() {

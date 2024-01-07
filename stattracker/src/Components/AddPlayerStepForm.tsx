@@ -5,7 +5,7 @@ import { Player } from '@/types/playerTypes';
 import { ChangeEvent, useContext, useState } from 'react';
 import { useFormState } from 'react-dom';
 import PlayerSearch from './PlayerSearch';
-import { Team, teamValidation } from '@/types/teamTypes';
+import { Team } from '@/types/teamTypes';
 import AddPlayerDetails from './AddPlayerDetails';
 import SubmitButton from './SubmitButton';
 import { AddPlayerContext } from '@/app/contexts/contexts';
@@ -18,7 +18,7 @@ type AddPlayerProps = {
 export default function AddPlayerStepForm(props: AddPlayerProps) {
     const [state, formAction] = useFormState(addPlayerToTeamAction, null);
     const [data, updateData] = useState({
-        playerId: 0,
+        playerId: '',
         teamId: '',
         playerNumber: 0,
     });
@@ -82,7 +82,7 @@ export default function AddPlayerStepForm(props: AddPlayerProps) {
                                         event.preventDefault();
                                         setActiveTab((prev) => prev + 1);
                                     }}
-                                    disabled={data.playerId == 0}
+                                    disabled={data.playerId == ''}
                                 >
                                     Next
                                 </button>

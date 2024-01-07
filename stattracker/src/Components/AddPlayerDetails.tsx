@@ -1,7 +1,7 @@
 'use client';
 
 type AddPlayerDetails = {
-    playerId: number;
+    playerId: string;
 };
 
 export default function AddPlayerDetails(props: AddPlayerDetails) {

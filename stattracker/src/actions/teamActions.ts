@@ -1,6 +1,6 @@
 'use server';
 
-import Teams from '@/app/Teams/page';
+import { generateRandom6DigitNumber } from '@/Helpers/numberHelpers';
 import prisma, { authOptions } from '@/app/api/auth/[...nextauth]/options';
 import TeamService from '@/services/teamService';
 import { Team, addPlayerValidation, teamValidation } from '@/types/teamTypes';
@@ -67,7 +67,7 @@ export async function addPlayerToTeamAction(
 ) {
     const teamAndPlayer = {
         teamId: formData.get('teamId') as string,
-        playerId: parseInt(formData.get('playerId') as string),
+        playerId: formData.get('playerId') as string,
         playerNumber: parseInt(formData.get('playerNumber') as string),
     };
 
@@ -89,13 +89,4 @@ export async function addPlayerToTeamAction(
     );
 
     redirect(`/Teams/${teamAndPlayer.teamId}`);
-}
-
-function generateRandom6DigitNumber() {
-    const randomNumber = Math.floor(Math.random() * 1000000);
-
-    // Format the number to have leading zeros and ensure it's 6 digits long
-    const formattedNumber = String(randomNumber).padStart(6, '0');
-
-    return formattedNumber;
 }

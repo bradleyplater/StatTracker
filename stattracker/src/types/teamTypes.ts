@@ -15,5 +15,5 @@ export const teamValidation = z.object({
 
 export const addPlayerValidation = z.object({
     teamId: z.string().min(3),
-    playerId: z.number(),
+    playerId: z.string().regex(new RegExp('^PLR\\d{6}$')),
 });

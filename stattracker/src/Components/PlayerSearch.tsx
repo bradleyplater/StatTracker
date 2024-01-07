@@ -1,14 +1,13 @@
 'use client';
 
 import { AddPlayerContext } from '@/app/contexts/contexts';
-import { Player, playerValidation } from '@/types/playerTypes';
-import { Team, teamValidation } from '@/types/teamTypes';
+import { Player } from '@/types/playerTypes';
 import { MagnifyingGlassIcon } from '@heroicons/react/16/solid';
 import { ChangeEvent, useContext, useState } from 'react';
 
 type PlayerSearchProps = {
     players: Player[];
-    selectedPlayer: number;
+    selectedPlayer: string;
     handleElementChange: (event: ChangeEvent<HTMLInputElement>) => void;
 };
 

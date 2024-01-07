@@ -1,4 +1,4 @@
-import prisma from '@/app/api/auth/[...nextauth]/options';
+import prisma from '../../prisma/prisma';
 import { Player } from '@/types/playerTypes';
 import { Team } from '@/types/teamTypes';
 import { Prisma } from '@prisma/client';

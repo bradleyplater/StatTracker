@@ -3,6 +3,7 @@ import { z } from 'zod';
 
 export type Player = {
     id: number;
+    number: number;
     firstName: string;
     surname: string;
     shootingSide: ShootingSide;

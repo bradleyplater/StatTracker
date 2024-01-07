@@ -29,9 +29,8 @@ export default function NavBar(props: NavbarProps) {
                     <div className="hidden md:block md:w-full">
                         {props.hasSession ? (
                             <div className="flex w-full justify-between">
-                                <Link href="/Profile?Stats=overall">
-                                    Profile
-                                </Link>
+                                <Link href="/Profile">Profile</Link>
+                                <Link href="/Teams">Teams</Link>
                                 <Link href="/api/auth/signout">Log out</Link>
                             </div>
                         ) : (
@@ -52,17 +51,30 @@ export default function NavBar(props: NavbarProps) {
                 <div
                     className={` ${
                         isOpen ? 'block' : 'hidden'
-                    } flex flex-col bg-teal-900 justify-center items-center py-2 text-center divide-y`}
+                    } flex flex-col bg-teal-900 justify-center items-center  text-center divide-y`}
                 >
                     {props.hasSession ? (
                         <>
                             <Link
-                                className="w-full"
-                                href="/Profile?Stats=overall"
+                                onClick={handleClick}
+                                className="w-full py-1"
+                                href="/Profile"
                             >
                                 Profile
                             </Link>
-                            <Link className="w-full" href="/api/auth/signout">
+                            <Link
+                                onClick={handleClick}
+                                className="w-full py-1"
+                                href="/Teams"
+                            >
+                                Teams
+                            </Link>
+
+                            <Link
+                                onClick={handleClick}
+                                className="w-full py-1"
+                                href="/api/auth/signout"
+                            >
                                 Log out
                             </Link>
                         </>

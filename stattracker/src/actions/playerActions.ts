@@ -1,6 +1,8 @@
 'use server';
 
+import { generateRandom6DigitNumber } from '@/Helpers/numberHelpers';
 import prisma, { authOptions } from '@/app/api/auth/[...nextauth]/options';
+import PlayerService from '@/services/playerService';
 import { Player, playerValidation } from '@/types/playerTypes';
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
@@ -27,9 +29,27 @@ export async function createPlayerInDb(prevState: any, formData: FormData) {
         };
     }
 
+    let idIsInDB = true;
+    let iteration = 0;
+    let id = 'PLR' + generateRandom6DigitNumber();
+
+    while (idIsInDB && iteration <= 5) {
+        const player = await PlayerService.GetPlayerByUserId(id);
+
+        if (player != null) {
+            console.log(`iteration ${iteration}: id already in use ${id}`);
+            idIsInDB = true;
+            iteration++;
+        } else {
+            idIsInDB = false;
+            playerData.id = id;
+        }
+    }
+
     try {
         await prisma.players.create({
             data: {
+                id: playerData.id,
                 firstName: playerData.firstName,
                 surname: playerData.surname,
                 shooting_side: parseInt(playerData.shootingSide.toString()),

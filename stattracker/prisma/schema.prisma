@@ -8,7 +8,7 @@ datasource db {
 }
 
 model Players {
-  id                                                 Int            @id @default(autoincrement())
+  id                                                 String            @id 
   shooting_side                                      Int?
   userid                                             String?
   firstName                                          String?
@@ -24,7 +24,7 @@ model Players {
 
 model PlayersInTeams {
   player                                            Players          @relation(fields: [playerId], references: [id])
-  playerId                                          Int
+  playerId                                          String
   team                                              Teams            @relation(fields: [teamId], references: [id])
   teamId                                            String
   playerNumber                                      Int?             @unique

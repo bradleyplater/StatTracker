@@ -2,7 +2,7 @@ import { ShootingSide } from '@/enums/ShootingSide';
 import { z } from 'zod';
 
 export type Player = {
-    id: number;
+    id: string;
     number: number;
     firstName: string;
     surname: string;

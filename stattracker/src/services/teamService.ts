@@ -119,7 +119,7 @@ export default class TeamService {
 
     static async AddPlayer(
         teamId: string,
-        playerId: number,
+        playerId: string,
         playerNumber: number
     ) {
         await prisma.teams.update({

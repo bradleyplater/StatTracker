@@ -2,9 +2,12 @@
 import { ChangeEvent, useState } from 'react';
 import TeamPlayersList from './TeamPlayersList';
 import { Team } from '@/types/teamTypes';
+import TeamGamesList from './TeamsGamesList';
+import { Game } from '@/types/gameTypes';
 
 type TeamPanelProps = {
     team: Team;
+    games: Game[];
     currentUserId: string;
 };
 export default function TeamPanel(props: TeamPanelProps) {
@@ -26,6 +29,8 @@ export default function TeamPanel(props: TeamPanelProps) {
                         )}
                     />
                 );
+            case 'games':
+                return <TeamGamesList games={props.games}></TeamGamesList>;
         }
     }
 
@@ -39,6 +44,7 @@ export default function TeamPanel(props: TeamPanelProps) {
                         defaultValue={panel}
                     >
                         <option value="players">Players</option>
+                        <option value="games">Games</option>
                     </select>
                 </div>
 

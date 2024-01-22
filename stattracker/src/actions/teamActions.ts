@@ -1,7 +1,7 @@
 'use server';
 
 import { generateRandom6DigitNumber } from '@/Helpers/numberHelpers';
-import prisma, { authOptions } from '@/app/api/auth/[...nextauth]/options';
+import { authOptions } from '@/app/api/auth/[...nextauth]/options';
 import TeamService from '@/services/teamService';
 import { Team, addPlayerValidation, teamValidation } from '@/types/teamTypes';
 import { Session, getServerSession } from 'next-auth';

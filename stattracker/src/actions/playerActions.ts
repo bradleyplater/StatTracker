@@ -1,11 +1,12 @@
 'use server';
 
 import { generateRandom6DigitNumber } from '@/Helpers/numberHelpers';
-import prisma, { authOptions } from '@/app/api/auth/[...nextauth]/options';
+import { authOptions } from '@/app/api/auth/[...nextauth]/options';
 import PlayerService from '@/services/playerService';
 import { Player, playerValidation } from '@/types/playerTypes';
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
+import prisma from '../../prisma/prisma';
 
 export async function createPlayerInDb(prevState: any, formData: FormData) {
     const session = await getServerSession(authOptions);
@@ -54,8 +55,8 @@ export async function createPlayerInDb(prevState: any, formData: FormData) {
                 surname: playerData.surname,
                 shooting_side: parseInt(playerData.shootingSide.toString()),
                 userid: session?.user.id,
-                goals: 0,
-                assists: 0,
+                numberOfGoals: 0,
+                numberOfAssists: 0,
                 gamesPlayed: 0,
                 pims: 0,
             },

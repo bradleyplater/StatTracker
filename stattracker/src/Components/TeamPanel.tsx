@@ -30,7 +30,15 @@ export default function TeamPanel(props: TeamPanelProps) {
                     />
                 );
             case 'games':
-                return <TeamGamesList games={props.games}></TeamGamesList>;
+                return (
+                    <TeamGamesList
+                        teamId={props.team.id}
+                        games={props.games}
+                        isAdmin={props.team.admins.includes(
+                            props.currentUserId
+                        )}
+                    ></TeamGamesList>
+                );
         }
     }
 

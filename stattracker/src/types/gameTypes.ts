@@ -1,3 +1,4 @@
+import { z } from 'zod';
 import { Team } from './teamTypes';
 
 export type Goals = {
@@ -16,3 +17,17 @@ export type Game = {
     goalsConceeded: number;
     goalsScored: number;
 };
+
+export type PostGame = {
+    id: string | undefined;
+    teamCreatedBy: string;
+    opponentTeam: string;
+    isHome: boolean;
+};
+
+// TODO add regexs here for better validation
+export const postGameValidation = z.object({
+    teamCreatedBy: z.string(),
+    opponentTeam: z.string(),
+    isHome: z.boolean(),
+});

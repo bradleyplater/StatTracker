@@ -53,6 +53,7 @@ export default function AddPlayerStepForm(props: AddPlayerProps) {
                 <div className="text-gray-900">
                     <form action={formAction}>
                         {formTabs[activeTab]}
+
                         <input
                             name="teamId"
                             value={props.currentTeam.id}
@@ -82,7 +83,6 @@ export default function AddPlayerStepForm(props: AddPlayerProps) {
                                         event.preventDefault();
                                         setActiveTab((prev) => prev + 1);
                                     }}
-                                    disabled={data.playerId == ''}
                                 >
                                     Next
                                 </button>

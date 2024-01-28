@@ -7,14 +7,36 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Games {
+  id                                                String            @id
+  goals                                             Goals[]
+  teamCreatedBy                                     Teams             @relation(fields: [teamCreatedById], references: [id])
+  teamCreatedById                                   String            
+  opponentTeam                                      String
+  isHome                                            Boolean
+  goalsConceeded                                    Int
+  goalsScored                                       Int
+}
+
+model Goals {
+  id                                                 Int              @id @default(autoincrement())
+  game                                               Games            @relation(fields: [gameId], references: [id])
+  gameId                                             String
+  scoredByPlayerId                                   String
+  scoredBy                                           Players          @relation(name: "scoredBy", fields: [scoredByPlayerId], references: [id])
+  assistedBy                                         Players[]        @relation(name: "assistedBy")
+}
+
 model Players {
   id                                                 String            @id 
   shooting_side                                      Int?
   userid                                             String?
   firstName                                          String?
   surname                                            String?
-  goals                                              Int?
-  assists                                            Int?
+  goals                                              Goals[]          @relation(name: "scoredBy")
+  numberOfGoals                                      Int?
+  assists                                            Goals[]          @relation(name: "assistedBy")
+  numberOfAssists                                    Int?
   gamesPlayed                                        Int?
   pims                                               Int?
   teams                                              PlayersInTeams[]
@@ -28,6 +50,8 @@ model PlayersInTeams {
   team                                              Teams            @relation(fields: [teamId], references: [id])
   teamId                                            String
   playerNumber                                      Int?             @unique
+  numberOfGoals                                     Int              @default(0)
+  numberOfAssists                                   Int              @default(0)
 
   @@id([playerId, teamId])
 }
@@ -35,6 +59,7 @@ model PlayersInTeams {
 model Teams {
   id                                                String          @id
   name                                              String          @unique
+  games                                             Games[]
   admins                                            User[]
   players                                           PlayersInTeams[]
 } 

@@ -26,14 +26,14 @@ export default function GoalList() {
                         <Card key={goal.id}>
                             <CardContent className="pb-4">
                                 <div className="flex flex-col pt-2">
-                                    <p className="text-lg">Goal {index}</p>
-                                    <p className="text-lg">{scoredByName}</p>
+                                    <p className="text-base">Goal {index}</p>
+                                    <p className="text-base">{scoredByName}</p>
                                     <div className="flex gap-2">
                                         {assistedBy.map((player) => {
                                             return (
                                                 <p
                                                     key={player.id}
-                                                    className="text-gray-600"
+                                                    className="text-gray-600 text-sm"
                                                 >
                                                     {player.firstName}{' '}
                                                     {player.surname}

@@ -10,9 +10,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/Components/ui/tabs';
 import AddGoalForm from '@/Components/Forms/AddGoalForm';
 import { Separator } from '@/Components/ui/separator';
 import { createContext } from 'react';
-import { Card, CardContent } from '@/Components/ui/card';
-import { ScrollBar, ScrollArea } from '@/Components/ui/scroll-area';
 import GoalList from '../Goal/GoalList';
+import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
+} from '@/Components/ui/accordion';
 
 export type GameDisplayProps = {
     game: Game;
@@ -68,10 +72,16 @@ export default function GameDisplay(props: GameDisplayProps) {
                         </TabsContent>
                     </Tabs>
                 </div>
-
-                <div>
-                    <GoalList />
-                </div>
+                <Accordion type="single" collapsible className="w-full">
+                    <AccordionItem value="item-1">
+                        <AccordionTrigger className="text-lg">
+                            Goals
+                        </AccordionTrigger>
+                        <AccordionContent>
+                            <GoalList />
+                        </AccordionContent>
+                    </AccordionItem>
+                </Accordion>
             </div>
         </GameContext.Provider>
     );

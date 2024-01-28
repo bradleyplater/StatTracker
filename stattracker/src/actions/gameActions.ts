@@ -1,9 +1,7 @@
 'use server';
 import { generateRandom6DigitNumber } from '@/Helpers/numberHelpers';
-import { authOptions } from '@/app/api/auth/[...nextauth]/options';
 import GamesService from '@/services/gamesService';
 import { Game, PostGame, postGameValidation } from '@/types/gameTypes';
-import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 
 export async function addGameAction(prevState: any, formData: FormData) {

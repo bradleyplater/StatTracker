@@ -51,5 +51,5 @@ export async function addGameAction(prevState: any, formData: FormData) {
         redirect('/Error');
     }
 
-    redirect(`/Team/${gameData.teamCreatedBy}`);
+    redirect(`/Games/${gameData.id}`);
 }

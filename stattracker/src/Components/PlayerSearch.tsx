@@ -3,7 +3,14 @@
 import { AddPlayerContext } from '@/app/contexts/contexts';
 import { Player } from '@/types/playerTypes';
 import { MagnifyingGlassIcon } from '@heroicons/react/16/solid';
-import { ChangeEvent, useContext, useState } from 'react';
+import { Label } from '@radix-ui/react-label';
+import { ChangeEvent, useContext, useEffect, useState } from 'react';
+import { Input } from './ui/input';
+import { useFormState } from 'react-dom';
+import { createPlayerInDb } from '@/actions/playerActions';
+import EnumSelect from './EnumSelect';
+import { ShootingSide } from '@/enums/ShootingSide';
+import { Button } from './ui/button';
 
 type PlayerSearchProps = {
     players: Player[];
@@ -12,13 +19,28 @@ type PlayerSearchProps = {
 };
 
 export default function PlayerSearch(props: PlayerSearchProps) {
+    const [formState, formAction] = useFormState(createPlayerInDb, null);
     const [filteredPlayers, updateFilteredPlayers] = useState([] as Player[]);
+    const [shouldShowHelpMessage, updateShouldShowHelpMessage] =
+        useState(false);
+    const [searchTerm, updateSearchTerm] = useState('');
+
     const currentTeam = useContext(AddPlayerContext);
+
+    useEffect(() => {
+        if (filteredPlayers.length == 0 && searchTerm != '') {
+            updateShouldShowHelpMessage(true);
+        } else {
+            updateShouldShowHelpMessage(false);
+        }
+    }, [filteredPlayers, searchTerm]);
 
     function handleSearchChange(event: ChangeEvent<HTMLInputElement>) {
         updateFilteredPlayers(
             props.players.filter((player) => {
                 const fullName = [player.firstName, player.surname].join(' ');
+
+                updateSearchTerm(event.target.value.toLowerCase());
 
                 if (event.target.value.toLowerCase() == '') {
                     return null;
@@ -90,6 +112,12 @@ export default function PlayerSearch(props: PlayerSearchProps) {
                         );
                     })}
                 </div>
+                {shouldShowHelpMessage ? (
+                    <span>
+                        Looks like we could not find this player. Click next and
+                        you can create one there
+                    </span>
+                ) : null}
             </div>
         </>
     );

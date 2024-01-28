@@ -3,10 +3,11 @@ import { Team } from '@/types/teamTypes';
 import '@/extensions/stringExtensions';
 import { Input } from '../ui/input';
 import { Label } from '@radix-ui/react-label';
-import Select from 'react-select';
 import { Button } from '../ui/button';
 import { useFormState } from 'react-dom';
 import { addGameAction } from '@/actions/gameActions';
+import Select from 'react-select';
+import { createPlayerOptions } from '@/Helpers/playerHelpers';
 
 export type AddGameFormProps = {
     team: Team;
@@ -14,17 +15,6 @@ export type AddGameFormProps = {
 
 export default function AddGameForm(props: AddGameFormProps) {
     const [formState, formAction] = useFormState(addGameAction, null);
-
-    function createPlayerOptions(): { value: string; label: string }[] {
-        let playerOptions: { value: string; label: string }[] = [];
-        props.team.players.map((player) => {
-            playerOptions.push({
-                value: player.userId,
-                label: `${player.firstName.toTitleCase()} ${player.surname.toTitleCase()}`,
-            });
-        });
-        return playerOptions;
-    }
 
     return (
         <form
@@ -66,12 +56,13 @@ export default function AddGameForm(props: AddGameFormProps) {
                 </div>
                 <div className="grid w-full max-w-sm items-center gap-1">
                     <Label htmlFor="players">Players</Label>
+
                     <Select
                         isMulti
                         name="players"
-                        id="players"
+                        options={createPlayerOptions(props.team.players)}
                         className="basic-multi-select"
-                        options={createPlayerOptions()}
+                        classNamePrefix="select"
                     />
                 </div>
                 <div className="grid w-full max-w-sm items-center gap-1">
@@ -79,7 +70,6 @@ export default function AddGameForm(props: AddGameFormProps) {
                     <Select
                         name="location"
                         id="location"
-                        className="basic-multi-select"
                         options={[
                             { value: 'home', label: 'Home' },
                             { value: 'away', label: 'Away' },

@@ -99,4 +99,6 @@ export default class GamesService {
 
         return games;
     }
+
+    static async UpdateYourTeamGoals() {}
 }

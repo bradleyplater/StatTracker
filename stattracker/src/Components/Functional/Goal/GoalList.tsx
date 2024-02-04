@@ -8,6 +8,8 @@ import { GameContext } from '../Game/GameDisplay';
 export default function GoalList() {
     const gameContext = useContext(GameContext);
 
+    console.log('games list', gameContext.goals);
+
     return (
         <ScrollArea className="w-96 whitespace-nowrap rounded-md border">
             <div className="flex p-2 gap-5">

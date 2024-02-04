@@ -31,20 +31,53 @@ export default class GoalService {
     static async CreateGoal(goal: PostGoal) {
         const assists: { id: string }[] = [];
         goal.assistedBy.map((assist) => assists.push({ id: assist }));
+        let createdGoal: Goals = {
+            id: 0,
+            assistedBy: [''],
+            scoredBy: '',
+            gameId: '',
+        };
         try {
-            await prisma.goals.create({
-                data: {
-                    game: {
-                        connect: { id: goal.gameId },
+            let response;
+            if (assists[0].id !== '') {
+                response = await prisma.goals.create({
+                    data: {
+                        game: {
+                            connect: { id: goal.gameId },
+                        },
+                        scoredBy: {
+                            connect: { id: goal.scoredBy },
+                        },
+                        assistedBy: {
+                            connect: assists,
+                        },
                     },
-                    scoredBy: {
-                        connect: { id: goal.scoredBy },
+                    include: {
+                        assistedBy: true,
                     },
-                    assistedBy: {
-                        connect: assists,
+                });
+            } else {
+                response = await prisma.goals.create({
+                    data: {
+                        game: {
+                            connect: { id: goal.gameId },
+                        },
+                        scoredBy: {
+                            connect: { id: goal.scoredBy },
+                        },
                     },
-                },
-            });
+                    include: {
+                        assistedBy: true,
+                    },
+                });
+            }
+
+            createdGoal.id = response.id;
+            createdGoal.gameId = response.gameId;
+            createdGoal.scoredBy = response.scoredByPlayerId;
+            createdGoal.assistedBy = response.assistedBy.map(
+                (player) => player.id
+            );
         } catch (error) {
             console.log('Creating new goal failed: ', error);
             redirect('/Error');
@@ -142,6 +175,6 @@ export default class GoalService {
             redirect('/Error');
         }
 
-        return { updatedGoalsScored: goalsScored };
+        return { updatedGoalsScored: goalsScored, latestGoal: createdGoal };
     }
 }

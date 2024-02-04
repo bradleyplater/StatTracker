@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { Team } from './teamTypes';
+import { Player } from './playerTypes';
 
 export type Goals = {
     id: number;
@@ -16,6 +17,7 @@ export type Game = {
     isHome: boolean;
     goalsConceeded: number;
     goalsScored: number;
+    players: Player[];
 };
 
 export type PostGame = {
@@ -23,6 +25,7 @@ export type PostGame = {
     teamCreatedBy: string;
     opponentTeam: string;
     isHome: boolean;
+    players: { id: string }[];
 };
 
 // TODO add regexs here for better validation

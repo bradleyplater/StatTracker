@@ -39,7 +39,7 @@ export default function AddGoalForm(props: AddGoalFormProps) {
                             name="scoredBy"
                             id="scoredBy"
                             options={createPlayerOptions(
-                                gameContext.team.players
+                                gameContext.game.players
                             )}
                         />
                     </div>
@@ -51,7 +51,7 @@ export default function AddGoalForm(props: AddGoalFormProps) {
                             id="assistedBy"
                             className="basic-multi-select"
                             options={createPlayerOptions(
-                                gameContext.team.players
+                                gameContext.game.players
                             )}
                         />
                     </div>
@@ -69,7 +69,7 @@ export default function AddGoalForm(props: AddGoalFormProps) {
                         name="teamId"
                         hidden
                         readOnly
-                        value={gameContext.team.id}
+                        value={gameContext.game.teamCreatedBy.id}
                     />
                 </CardContent>
                 <CardFooter>

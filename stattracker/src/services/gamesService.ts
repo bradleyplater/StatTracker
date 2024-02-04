@@ -1,13 +1,14 @@
 import { Game, PostGame } from '@/types/gameTypes';
 import prisma from '../../prisma/prisma';
 import { redirect } from 'next/navigation';
+import { Player } from '@/types/playerTypes';
 
 export default class GamesService {
     constructor() {}
 
     static async GetGameById(gameId: string): Promise<Game | null> {
         const response = await prisma.games.findUnique({
-            include: { goals: true, teamCreatedBy: true },
+            include: { goals: true, teamCreatedBy: true, players: true },
             where: {
                 id: gameId,
             },
@@ -33,6 +34,19 @@ export default class GamesService {
                 admins: [],
                 players: [],
             },
+            players: response.players.map((player) => {
+                return {
+                    id: player?.id,
+                    firstName: player?.firstName,
+                    surname: player?.surname,
+                    shootingSide: player?.shooting_side,
+                    goals: player?.numberOfGoals,
+                    assists: player?.numberOfAssists,
+                    gamesPlayed: player?.gamesPlayed,
+                    pims: player?.pims,
+                    userId: player?.userid,
+                } as Player;
+            }),
             opponentTeam: response?.opponentTeam,
             isHome: response?.isHome,
             goalsConceeded: response?.goalsConceeded,
@@ -50,6 +64,9 @@ export default class GamesService {
                     teamCreatedById: game.teamCreatedBy,
                     opponentTeam: game.opponentTeam,
                     isHome: game.isHome,
+                    players: {
+                        connect: game.players,
+                    },
                     goalsConceeded: 0,
                     goalsScored: 0,
                 },
@@ -65,6 +82,7 @@ export default class GamesService {
             include: {
                 goals: true,
                 teamCreatedBy: true,
+                players: true,
             },
             where: {
                 teamCreatedById: teamId,
@@ -90,6 +108,19 @@ export default class GamesService {
                     admins: [],
                     players: [],
                 },
+                players: game.players.map((player) => {
+                    return {
+                        id: player?.id,
+                        firstName: player?.firstName,
+                        surname: player?.surname,
+                        shootingSide: player?.shooting_side,
+                        goals: player?.numberOfGoals,
+                        assists: player?.numberOfAssists,
+                        gamesPlayed: player?.gamesPlayed,
+                        pims: player?.pims,
+                        userId: player?.userid,
+                    } as Player;
+                }),
                 opponentTeam: game.opponentTeam,
                 isHome: game.isHome,
                 goalsConceeded: game.goalsConceeded,

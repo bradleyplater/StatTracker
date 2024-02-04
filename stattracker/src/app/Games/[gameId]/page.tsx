@@ -10,18 +10,15 @@ import GoalService from '@/services/goalService';
 export default async function Page({ params }: { params: { gameId: string } }) {
     const session = await getServerSession(authOptions);
     const game = await GamesService.GetGameById(params.gameId);
-    const team = await TeamService.FindTeamById(
-        game?.teamCreatedBy.id as string
-    );
     const goals = await GoalService.GetAllGoalsByGame(params.gameId);
 
-    if (game == null || team == null) {
+    if (game == null) {
         redirect('/Error');
     }
 
     return (
         <>
-            <GameDisplay game={game} team={team} goals={goals} />
+            <GameDisplay game={game} goals={goals} />
         </>
     );
 }

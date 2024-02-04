@@ -37,7 +37,10 @@ export async function addGoalAction(prevState: any, formData: FormData) {
 
         return {
             success: true,
-            game: { goalsScored: response.updatedGoalsScored },
+            game: {
+                goalsScored: response.updatedGoalsScored,
+                latestGoal: response.latestGoal,
+            },
         };
     } catch (error) {
         console.log('Creating new player failed: ', error);

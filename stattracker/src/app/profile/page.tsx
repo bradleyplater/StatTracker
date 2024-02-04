@@ -28,20 +28,8 @@ export default async function Profile(pageProps: PageProps) {
                 <div className="bg-teal-100 text-gray-900 p-3 rounded-xl flex flex-row justify-around items-center gap-5">
                     <div>
                         <h1 className="text-2xl font-bold">
-                            4 {response.firstName} {response.surname}
+                            {response.firstName} {response.surname}
                         </h1>
-                    </div>
-                    <div>
-                        <p>
-                            <strong>Nationality: </strong>England
-                        </p>
-                        <p>
-                            <strong>Shoots: </strong>
-                            {response.shootingSide.toString()}
-                        </p>
-                        <p>
-                            <strong>Age</strong>: 23
-                        </p>
                     </div>
                 </div>
             </div>

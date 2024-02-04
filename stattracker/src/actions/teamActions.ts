@@ -121,7 +121,6 @@ export async function addPlayerToTeamAction(
                     firstName: playerData.firstName,
                     surname: playerData.surname,
                     shooting_side: parseInt(playerData.shootingSide.toString()),
-                    userid: session?.user.id,
                     numberOfGoals: 0,
                     numberOfAssists: 0,
                     gamesPlayed: 0,

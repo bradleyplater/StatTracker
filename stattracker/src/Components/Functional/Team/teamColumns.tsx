@@ -66,6 +66,22 @@ export const teamPlayerDataColumns: ColumnDef<Player>[] = [
         },
     },
     {
+        accessorKey: 'totalPoints',
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() =>
+                        column.toggleSorting(column.getIsSorted() === 'asc')
+                    }
+                >
+                    Total Points
+                    <ArrowsUpDownIcon className="ml-2 h-4 w-4" />
+                </Button>
+            );
+        },
+    },
+    {
         accessorKey: 'pims',
         header: ({ column }) => {
             return (

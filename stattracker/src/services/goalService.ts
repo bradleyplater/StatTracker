@@ -90,10 +90,31 @@ export default class GoalService {
                 },
                 data: {
                     numberOfGoals: { increment: 1 },
+                    totalPoints: { increment: 1 },
                 },
             });
         } catch (error) {
             console.log('Updating incrementing goal count for player: ', error);
+            redirect('/Error');
+        }
+
+        try {
+            await prisma.players.updateMany({
+                where: {
+                    id: {
+                        in: goal.assistedBy,
+                    },
+                },
+                data: {
+                    numberOfAssists: { increment: 1 },
+                    totalPoints: { increment: 1 },
+                },
+            });
+        } catch (error) {
+            console.log(
+                'Updating incrementing assist count for player: ',
+                error
+            );
             redirect('/Error');
         }
 
@@ -107,30 +128,12 @@ export default class GoalService {
                 },
                 data: {
                     numberOfGoals: { increment: 1 },
+                    totalPoints: { increment: 1 },
                 },
             });
         } catch (error) {
             console.log(
                 'Updating incrementing goal count for player in team: ',
-                error
-            );
-            redirect('/Error');
-        }
-
-        try {
-            await prisma.players.updateMany({
-                where: {
-                    id: {
-                        in: goal.assistedBy,
-                    },
-                },
-                data: {
-                    numberOfAssists: { increment: 1 },
-                },
-            });
-        } catch (error) {
-            console.log(
-                'Updating incrementing assist count for player: ',
                 error
             );
             redirect('/Error');
@@ -146,6 +149,7 @@ export default class GoalService {
                 },
                 data: {
                     numberOfAssists: { increment: 1 },
+                    totalPoints: { increment: 1 },
                 },
             });
         } catch (error) {

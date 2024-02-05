@@ -54,6 +54,7 @@ model PlayersInTeams {
   playerNumber                                      Int?             @unique
   numberOfGoals                                     Int              @default(0)
   numberOfAssists                                   Int              @default(0)
+  gamesPlayed                                       Int              @default(0)
 
   @@id([playerId, teamId])
 }

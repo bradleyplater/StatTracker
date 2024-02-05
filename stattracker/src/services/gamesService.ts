@@ -75,6 +75,42 @@ export default class GamesService {
             console.log('Creating new team failed: ', error);
             redirect('/Error');
         }
+
+        try {
+            await prisma.players.updateMany({
+                where: {
+                    id: {
+                        in: game.players.map((player) => player.id),
+                    },
+                },
+                data: {
+                    gamesPlayed: { increment: 1 },
+                },
+            });
+        } catch (error) {
+            console.log('Incrementing players gamesPlayed failed: ', error);
+            redirect('/Error');
+        }
+
+        try {
+            await prisma.playersInTeams.updateMany({
+                where: {
+                    teamId: game.teamCreatedBy,
+                    playerId: {
+                        in: game.players.map((player) => player.id),
+                    },
+                },
+                data: {
+                    gamesPlayed: { increment: 1 },
+                },
+            });
+        } catch (error) {
+            console.log(
+                'Incrementing playersInTeams gamesPlayed failed: ',
+                error
+            );
+            redirect('/Error');
+        }
     }
 
     static async GetAllGamesForTeam(teamId: string): Promise<Game[]> {

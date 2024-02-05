@@ -28,6 +28,14 @@ model Goals {
   assistedBy                                         Players[]        @relation(name: "assistedBy")
 }
 
+model Penalties {
+  id                                                 Int              @id @default(autoincrement())
+  player                                             Players          @relation(fields: [playerId], references: [id])      
+  playerId                                           String
+  type                                               String
+  duration                                           Int              @default(0)
+}
+
 model Players {
   id                                                 String            @id 
   shooting_side                                      Int?
@@ -42,9 +50,11 @@ model Players {
   gamesPlayed                                        Int?
   pims                                               Int?
   totalPoints                                        Int              @default(0)
+  penalties                                          Penalties[]
+  totalPenaltyDuration                               Int              @default(0)
   teams                                              PlayersInTeams[]
-  shooting_side_id                                   Shooting_side? @relation(fields: [shooting_side], references: [id])
-  user                                               User?          @relation(fields: [userid], references: [id])
+  shooting_side_id                                   Shooting_side?   @relation(fields: [shooting_side], references: [id])
+  user                                               User?            @relation(fields: [userid], references: [id])
 }
 
 model PlayersInTeams {
@@ -57,7 +67,8 @@ model PlayersInTeams {
   numberOfAssists                                   Int              @default(0)
   gamesPlayed                                       Int              @default(0)
   totalPoints                                       Int              @default(0)
-
+  totalPenaltyDuration                              Int              @default(0)
+  
   @@id([playerId, teamId])
 }
 

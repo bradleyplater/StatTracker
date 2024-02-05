@@ -23,7 +23,6 @@ import {
 
 export type GameDisplayProps = {
     game: Game;
-    team: Team;
     goals: Goals[];
 };
 
@@ -67,7 +66,7 @@ export default function GameDisplay(props: GameDisplayProps) {
             <div className="text-gray-900 flex flex-col p-2 items-center gap-2">
                 <div className="flex flex-row justify-between items-center w-full">
                     <span className="text-lg w-1/3 text-center">
-                        {gameState.team.name.toTitleCase()}
+                        {gameState.game.teamCreatedBy.name.toTitleCase()}
                     </span>
                     <div className="text-xl px-5 py-2 flex justify-center bg-gray-100 inner-shadow rounded-md gap-2">
                         <span>{gameState.game.goalsScored}</span>
@@ -100,7 +99,7 @@ export default function GameDisplay(props: GameDisplayProps) {
                                 <div className="flex p-2 gap-5">
                                     {gameState.goals.map((goal, index) => {
                                         const scoredByPlayer =
-                                            gameState.team.players.filter(
+                                            gameState.game.players.filter(
                                                 (player) =>
                                                     player.id == goal.scoredBy
                                             )[0];
@@ -108,7 +107,7 @@ export default function GameDisplay(props: GameDisplayProps) {
                                         const scoredByName = `${scoredByPlayer.firstName} ${scoredByPlayer.surname}`;
 
                                         const assistedBy =
-                                            gameState.team.players.filter(
+                                            gameState.game.players.filter(
                                                 (player) =>
                                                     goal.assistedBy.includes(
                                                         player.id

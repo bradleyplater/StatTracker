@@ -1,15 +1,22 @@
 'use server';
 import { generateRandom6DigitNumber } from '@/Helpers/numberHelpers';
 import GamesService from '@/services/gamesService';
-import { Game, PostGame, postGameValidation } from '@/types/gameTypes';
+import { PostGame, postGameValidation } from '@/types/gameTypes';
 import { redirect } from 'next/navigation';
 
 export async function addGameAction(prevState: any, formData: FormData) {
+    const playerIds: { id: string }[] = [];
+
+    formData.forEach((value, name) => {
+        if (name === 'players') playerIds.push({ id: value as string });
+    });
+
     const gameData = {
         id: undefined,
         teamCreatedBy: formData.get('teamCreatedBy') as string,
         opponentTeam: formData.get('opponentTeam') as string,
         isHome: (formData.get('location') as string).toLowerCase() === 'home',
+        players: playerIds,
     } as PostGame;
 
     const validatedFields = postGameValidation.safeParse(gameData);

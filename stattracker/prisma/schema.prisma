@@ -16,6 +16,7 @@ model Games {
   isHome                                            Boolean
   goalsConceeded                                    Int
   goalsScored                                       Int
+  players                                           Players[]
 }
 
 model Goals {
@@ -37,6 +38,7 @@ model Players {
   numberOfGoals                                      Int?
   assists                                            Goals[]          @relation(name: "assistedBy")
   numberOfAssists                                    Int?
+  games                                              Games[]
   gamesPlayed                                        Int?
   pims                                               Int?
   teams                                              PlayersInTeams[]
@@ -52,6 +54,7 @@ model PlayersInTeams {
   playerNumber                                      Int?             @unique
   numberOfGoals                                     Int              @default(0)
   numberOfAssists                                   Int              @default(0)
+  gamesPlayed                                       Int              @default(0)
 
   @@id([playerId, teamId])
 }

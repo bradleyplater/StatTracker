@@ -12,6 +12,7 @@ export type Player = {
     gamesPlayed: number;
     pims: number;
     userId: string;
+    totalPoints: number;
 };
 
 // Validation Type

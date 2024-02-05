@@ -23,6 +23,7 @@ export default class PlayerService {
             gamesPlayed: response?.gamesPlayed,
             pims: response?.pims,
             userId: response?.userid,
+            totalPoints: response?.totalPoints,
         } as Player;
 
         return player;
@@ -44,6 +45,7 @@ export default class PlayerService {
                 gamesPlayed: player?.gamesPlayed,
                 pims: player?.pims,
                 userId: player?.userid,
+                totalPoints: player?.totalPoints,
             } as Player);
         });
 

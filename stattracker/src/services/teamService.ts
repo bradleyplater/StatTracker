@@ -4,7 +4,6 @@ import { Team } from '@/types/teamTypes';
 import { Prisma } from '@prisma/client';
 import { Session } from 'next-auth';
 import { redirect } from 'next/navigation';
-import internal from 'stream';
 
 export default class TeamService {
     constructor() {}
@@ -40,6 +39,7 @@ export default class TeamService {
                         gamesPlayed: player?.player.gamesPlayed,
                         pims: player?.player.pims,
                         userId: player?.player.userid,
+                        totalPoints: player?.player.totalPoints,
                     } as Player;
                 }),
             });
@@ -80,6 +80,7 @@ export default class TeamService {
                         gamesPlayed: player?.player.gamesPlayed,
                         pims: player?.player.pims,
                         userId: player?.player.userid,
+                        totalPoints: player?.player.totalPoints,
                     } as Player;
                 }),
             } as Team;

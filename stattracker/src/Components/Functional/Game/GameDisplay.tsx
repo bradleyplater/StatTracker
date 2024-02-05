@@ -20,6 +20,7 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from '@/Components/ui/accordion';
+import AddPenaltyForm from '@/Components/Forms/AddPenaltyForm';
 
 export type GameDisplayProps = {
     game: Game;
@@ -30,6 +31,11 @@ export const GameContext = createContext({} as GameDisplayProps);
 
 export default function GameDisplay(props: GameDisplayProps) {
     const [addGoalFormState, formAction] = useFormState(addGoalAction, null);
+    const [addPenaltyFormState, penaltyFormAction] = useFormState(
+        addGoalAction,
+        null
+    );
+
     const [adminTab, updateAdminTab] = useState('');
     const [gameState, setGameState] = useState(props);
 
@@ -86,6 +92,9 @@ export default function GameDisplay(props: GameDisplayProps) {
                         </TabsList>
                         <TabsContent value="addGoal">
                             <AddGoalForm formAction={formAction} />
+                        </TabsContent>
+                        <TabsContent value="addPims">
+                            <AddPenaltyForm formAction={formAction} />
                         </TabsContent>
                     </Tabs>
                 </div>

@@ -17,6 +17,7 @@ model Games {
   goalsConceeded                                    Int
   goalsScored                                       Int
   players                                           Players[]
+  penalties                                         Penalties[]
 }
 
 model Goals {
@@ -32,6 +33,8 @@ model Penalties {
   id                                                 Int              @id @default(autoincrement())
   player                                             Players          @relation(fields: [playerId], references: [id])      
   playerId                                           String
+  game                                               Games            @relation(fields: [gameId], references: [id])
+  gameId                                             String
   type                                               String
   duration                                           Int              @default(0)
 }

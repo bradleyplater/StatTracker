@@ -37,7 +37,7 @@ export default class TeamService {
                         goals: player?.player.numberOfGoals,
                         assists: player?.player.numberOfAssists,
                         gamesPlayed: player?.player.gamesPlayed,
-                        pims: player?.player.pims,
+                        pims: player?.player.totalPenaltyDuration,
                         userId: player?.player.userid,
                         totalPoints: player?.player.totalPoints,
                     } as Player;
@@ -78,7 +78,7 @@ export default class TeamService {
                         goals: player?.player.numberOfGoals,
                         assists: player?.player.numberOfAssists,
                         gamesPlayed: player?.player.gamesPlayed,
-                        pims: player?.player.pims,
+                        pims: player?.player.totalPenaltyDuration,
                         userId: player?.player.userid,
                         totalPoints: player?.player.totalPoints,
                     } as Player;

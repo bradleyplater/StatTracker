@@ -2,13 +2,19 @@ import { Game, PostGame } from '@/types/gameTypes';
 import prisma from '../../prisma/prisma';
 import { redirect } from 'next/navigation';
 import { Player } from '@/types/playerTypes';
+import { Penalties } from '@/enums/Penalties';
 
 export default class GamesService {
     constructor() {}
 
     static async GetGameById(gameId: string): Promise<Game | null> {
         const response = await prisma.games.findUnique({
-            include: { goals: true, teamCreatedBy: true, players: true },
+            include: {
+                goals: true,
+                teamCreatedBy: true,
+                players: true,
+                penalties: true,
+            },
             where: {
                 id: gameId,
             },
@@ -46,6 +52,15 @@ export default class GamesService {
                     pims: player?.pims,
                     userId: player?.userid,
                 } as Player;
+            }),
+            penalties: response.penalties.map((penalty) => {
+                return {
+                    offender: penalty.playerId,
+                    gameId: penalty.gameId,
+                    duration: penalty.duration,
+                    type: penalty.type as Penalties,
+                    teamId: undefined,
+                };
             }),
             opponentTeam: response?.opponentTeam,
             isHome: response?.isHome,
@@ -119,6 +134,7 @@ export default class GamesService {
                 goals: true,
                 teamCreatedBy: true,
                 players: true,
+                penalties: true,
             },
             where: {
                 teamCreatedById: teamId,
@@ -156,6 +172,15 @@ export default class GamesService {
                         pims: player?.pims,
                         userId: player?.userid,
                     } as Player;
+                }),
+                penalties: game.penalties.map((penalty) => {
+                    return {
+                        offender: penalty.playerId,
+                        gameId: penalty.gameId,
+                        duration: penalty.duration,
+                        type: penalty.type as Penalties,
+                        teamId: undefined,
+                    };
                 }),
                 opponentTeam: game.opponentTeam,
                 isHome: game.isHome,

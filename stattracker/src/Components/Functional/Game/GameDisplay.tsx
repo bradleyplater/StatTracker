@@ -3,17 +3,14 @@ import '@/extensions/stringExtensions';
 import { redirect } from 'next/navigation';
 import { Game, Goals } from '@/types/gameTypes';
 import { useState } from 'react';
-import { Team } from '@/types/teamTypes';
 import { useFormState } from 'react-dom';
 import { addGoalAction } from '@/actions/goalActions';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/Components/ui/tabs';
 import AddGoalForm from '@/Components/Forms/AddGoalForm';
 import { Separator } from '@/Components/ui/separator';
 import { createContext } from 'react';
-import GoalList from '../Goal/GoalList';
 import { Card, CardContent } from '@/Components/ui/card';
 import { ScrollBar, ScrollArea } from '@/Components/ui/scroll-area';
-import { useContext } from 'react';
 import {
     Accordion,
     AccordionContent,
@@ -21,6 +18,8 @@ import {
     AccordionTrigger,
 } from '@/Components/ui/accordion';
 import AddPenaltyForm from '@/Components/Forms/AddPenaltyForm';
+import { addPenaltyAction } from '@/actions/penaltyActions';
+import { Penalties } from '@/enums/Penalties';
 
 export type GameDisplayProps = {
     game: Game;
@@ -32,7 +31,7 @@ export const GameContext = createContext({} as GameDisplayProps);
 export default function GameDisplay(props: GameDisplayProps) {
     const [addGoalFormState, formAction] = useFormState(addGoalAction, null);
     const [addPenaltyFormState, penaltyFormAction] = useFormState(
-        addGoalAction,
+        addPenaltyAction,
         null
     );
 
@@ -58,6 +57,24 @@ export default function GameDisplay(props: GameDisplayProps) {
                 ],
             },
             goals: [...gameState.game.goals, addGoalFormState.game.latestGoal],
+        };
+
+        setGameState(newState);
+    }
+
+    if (addPenaltyFormState?.success) {
+        addPenaltyFormState.success = false;
+        updateAdminTab('');
+
+        const newState = {
+            ...gameState,
+            game: {
+                ...gameState.game,
+                penalties: [
+                    ...gameState.game.penalties,
+                    addPenaltyFormState?.game.latestPenalty,
+                ],
+            },
         };
 
         setGameState(newState);
@@ -94,7 +111,7 @@ export default function GameDisplay(props: GameDisplayProps) {
                             <AddGoalForm formAction={formAction} />
                         </TabsContent>
                         <TabsContent value="addPims">
-                            <AddPenaltyForm formAction={formAction} />
+                            <AddPenaltyForm formAction={penaltyFormAction} />
                         </TabsContent>
                     </Tabs>
                 </div>
@@ -159,6 +176,63 @@ export default function GameDisplay(props: GameDisplayProps) {
                                             </Card>
                                         );
                                     })}
+                                    <ScrollBar orientation="horizontal" />
+                                </div>
+                            </ScrollArea>
+                        </AccordionContent>
+                    </AccordionItem>
+                    <AccordionItem value="item-2">
+                        <AccordionTrigger className="text-lg">
+                            Penalties
+                        </AccordionTrigger>
+                        <AccordionContent>
+                            <ScrollArea className="w-96 whitespace-nowrap rounded-md border">
+                                <div className="flex p-2 gap-5">
+                                    {gameState.game.penalties.map(
+                                        (penalty, index) => {
+                                            const offendedBy =
+                                                gameState.game.players.filter(
+                                                    (player) =>
+                                                        player.id ==
+                                                        penalty.offender
+                                                )[0];
+
+                                            const offenderName = `${offendedBy.firstName} ${offendedBy.surname}`;
+                                            const penaltyString = `${
+                                                Penalties[
+                                                    penalty.type as keyof typeof Penalties
+                                                ]
+                                            } ${penalty.duration} minutes`;
+
+                                            return (
+                                                <Card key={penalty.offender}>
+                                                    <CardContent className="pb-4">
+                                                        <div className="flex flex-col pt-2">
+                                                            <p className="text-base">
+                                                                Penalty{' '}
+                                                                {index + 1}
+                                                            </p>
+                                                            <p className="text-base">
+                                                                {offenderName}
+                                                            </p>
+                                                            <div className="flex gap-2">
+                                                                <p
+                                                                    key={
+                                                                        penalty.offender
+                                                                    }
+                                                                    className="text-gray-600 text-sm"
+                                                                >
+                                                                    {
+                                                                        penaltyString
+                                                                    }
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </CardContent>
+                                                </Card>
+                                            );
+                                        }
+                                    )}
                                     <ScrollBar orientation="horizontal" />
                                 </div>
                             </ScrollArea>

@@ -8,19 +8,17 @@ import { GameContext } from '../Game/GameDisplay';
 export default function GoalList() {
     const gameContext = useContext(GameContext);
 
-    console.log('games list', gameContext.goals);
-
     return (
         <ScrollArea className="w-96 whitespace-nowrap rounded-md border">
             <div className="flex p-2 gap-5">
                 {gameContext.goals.map((goal, index) => {
-                    const scoredByPlayer = gameContext.team.players.filter(
+                    const scoredByPlayer = gameContext.game.players.filter(
                         (player) => player.id == goal.scoredBy
                     )[0];
 
                     const scoredByName = `${scoredByPlayer.firstName} ${scoredByPlayer.surname}`;
 
-                    const assistedBy = gameContext.team.players.filter(
+                    const assistedBy = gameContext.game.players.filter(
                         (player) => goal.assistedBy.includes(player.id)
                     );
 

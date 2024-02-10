@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { Team } from './teamTypes';
 import { Player } from './playerTypes';
+import { Penalty } from './penaltyTypes';
 
 export type Goals = {
     id: number;
@@ -18,6 +19,7 @@ export type Game = {
     goalsConceeded: number;
     goalsScored: number;
     players: Player[];
+    penalties: Penalty[];
 };
 
 export type PostGame = {

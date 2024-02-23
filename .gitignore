@@ -34,3 +34,4 @@
 # typescript
 /stattracker/*.tsbuildinfo
 /stattracker/next-env.d.ts
+stattracker/prod.env

@@ -2,7 +2,7 @@ name: Build and Push Docker Image
 
 on:
     pull_request:
-        types: [opened, edited]
+        types: [opened, synchronize]
         branches:
             - '**'
         paths:

@@ -34,4 +34,6 @@ COPY --from=builder --chown=nextjs:nodejs /app/docker-bootstrap-app.sh ./
 USER nextjs
 EXPOSE 3000
 ENV PORT 3000
-CMD ["./docker-bootstrap-app.sh"]
+CMD ["npm", "run", "start"]
+
+

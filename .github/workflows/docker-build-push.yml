@@ -39,7 +39,7 @@ jobs:
                   aws-region: eu-west-2
 
             - name: Render Amazon ECS task definition
-              id: render-web-container
+              id: render-app-container
               uses: aws-actions/amazon-ecs-render-task-definition@v1
               with:
                   task-definition: ./aws/task-definition.json

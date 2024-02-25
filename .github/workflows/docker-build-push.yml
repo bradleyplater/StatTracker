@@ -21,3 +21,32 @@ jobs:
                   context: '{{defaultContext}}:stattracker'
                   push: true
                   tags: bradleystattracker/stattracker:latest
+    Deploy-to-ECS:
+        runs-on: ubuntu-latest
+        steps:
+            - name: configure aws credentials
+              uses: aws-actions/configure-aws-credentials@v4
+              with:
+                  role-to-assume: arn:aws:iam::730335400535:role/GitHubAction-AssumeRoleWithAction
+                  role-session-name: GitHub_to_AWS_via_FederatedOIDC
+                  aws-region: eu-west-2
+
+            - name: Render Amazon ECS task definition
+              id: render-web-container
+              uses: aws-actions/amazon-ecs-render-task-definition@v1
+              with:
+                  task-definition: .aws/task-definition.json
+                  container-name: stattracker
+                  image: docker.io/bradleystattracker/stattracker:latest
+                  environment-variables: |
+                      'DATABASE_URL=${{ secrets.DATABASE_URL }}'
+                      'NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }}'
+                      'GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}'
+                      'GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}'
+
+            - name: Deploy to Amazon ECS service
+              uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+              with:
+                  task-definition: ${{ steps.render-app-container.outputs.task-definition }}
+                  service: Stattracker-app
+                  cluster: Stattracker

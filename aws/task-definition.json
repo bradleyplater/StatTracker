@@ -1,5 +1,5 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:eu-west-2:730335400535:task-definition/Stattracker:15",
+    "taskDefinitionArn": "arn:aws:ecs:eu-west-2:730335400535:task-definition/Stattracker:16",
     "containerDefinitions": [
         {
             "name": "StatTracker",
@@ -24,18 +24,31 @@
                 }
             ],
             "essential": true,
-            "environment": [],
-            "environmentFiles": [],
+            "secrets": [
+                {
+                    "name": "'DATABASE_URL",
+                    "valueFrom": "arn:aws:secretsmanager:eu-west-2:730335400535:secret:Stattracker-prod-db-url-GqaY5n"
+                }
+            ],
             "mountPoints": [],
             "volumesFrom": [],
-            "ulimits": []
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-create-group": "true",
+                    "awslogs-group": "/ecs/Stattracker",
+                    "awslogs-region": "eu-west-2",
+                    "awslogs-stream-prefix": "ecs"
+                },
+                "secretOptions": []
+            }
         }
     ],
     "family": "Stattracker",
     "taskRoleArn": "arn:aws:iam::730335400535:role/ecsTaskExecutionRole",
     "executionRoleArn": "arn:aws:iam::730335400535:role/ecsTaskExecutionRole",
     "networkMode": "awsvpc",
-    "revision": 15,
+    "revision": 16,
     "volumes": [],
     "status": "ACTIVE",
     "requiresAttributes": [
@@ -61,7 +74,7 @@
         "cpuArchitecture": "X86_64",
         "operatingSystemFamily": "LINUX"
     },
-    "registeredAt": "2024-02-25T10:24:19.429Z",
-    "registeredBy": "arn:aws:iam::730335400535:root",
+    "registeredAt": "2024-02-25T17:18:24.482Z",
+    "registeredBy": "arn:aws:sts::730335400535:assumed-role/GitHubAction-AssumeRoleWithAction/GitHub_to_AWS_via_FederatedOIDC",
     "tags": []
 }

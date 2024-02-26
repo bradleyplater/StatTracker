@@ -1,5 +1,5 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:eu-west-2:730335400535:task-definition/Stattracker:16",
+    "taskDefinitionArn": "arn:aws:ecs:eu-west-2:730335400535:task-definition/Stattracker:19",
     "containerDefinitions": [
         {
             "name": "StatTracker",
@@ -24,14 +24,27 @@
                 }
             ],
             "essential": true,
-            "secrets": [
-                {
-                    "name": "'DATABASE_URL",
-                    "valueFrom": "arn:aws:secretsmanager:eu-west-2:730335400535:secret:Stattracker-prod-db-url-GqaY5n"
-                }
-            ],
+            "environment": [],
             "mountPoints": [],
             "volumesFrom": [],
+            "secrets": [
+                {
+                    "name": "DATABASE_URL",
+                    "valueFrom": "arn:aws:secretsmanager:eu-west-2:730335400535:secret:Stattracker-prod-db-url-GqaY5n"
+                },
+                {
+                    "name": "NEXTAUTH_SECRET",
+                    "valueFrom": "arn:aws:secretsmanager:eu-west-2:730335400535:secret:Stattracker-auth-secret-1j1C5b"
+                },
+                {
+                    "name": "GOOGLE_CLIENT_ID",
+                    "valueFrom": "arn:aws:secretsmanager:eu-west-2:730335400535:secret:Stattracker-google-id-F1HSmR"
+                },
+                {
+                    "name": "GOOGLE_CLIENT_SECRET",
+                    "valueFrom": "arn:aws:secretsmanager:eu-west-2:730335400535:secret:Stattracker-google-secret-uxuiKz"
+                }
+            ],
             "logConfiguration": {
                 "logDriver": "awslogs",
                 "options": {
@@ -48,10 +61,22 @@
     "taskRoleArn": "arn:aws:iam::730335400535:role/ecsTaskExecutionRole",
     "executionRoleArn": "arn:aws:iam::730335400535:role/ecsTaskExecutionRole",
     "networkMode": "awsvpc",
-    "revision": 16,
+    "revision": 19,
     "volumes": [],
     "status": "ACTIVE",
     "requiresAttributes": [
+        {
+            "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+        },
+        {
+            "name": "ecs.capability.execution-role-awslogs"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+        },
+        {
+            "name": "ecs.capability.secrets.asm.environment-variables"
+        },
         {
             "name": "com.amazonaws.ecs.capability.docker-remote-api.1.21"
         },
@@ -63,6 +88,9 @@
         },
         {
             "name": "ecs.capability.task-eni"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.29"
         }
     ],
     "placementConstraints": [],
@@ -74,7 +102,7 @@
         "cpuArchitecture": "X86_64",
         "operatingSystemFamily": "LINUX"
     },
-    "registeredAt": "2024-02-25T17:18:24.482Z",
-    "registeredBy": "arn:aws:sts::730335400535:assumed-role/GitHubAction-AssumeRoleWithAction/GitHub_to_AWS_via_FederatedOIDC",
+    "registeredAt": "2024-02-26T11:54:37.852Z",
+    "registeredBy": "arn:aws:iam::730335400535:root",
     "tags": []
 }

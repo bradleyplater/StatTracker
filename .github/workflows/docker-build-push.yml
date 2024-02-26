@@ -45,15 +45,10 @@ jobs:
                   task-definition: ./aws/task-definition.json
                   container-name: StatTracker
                   image: docker.io/bradleystattracker/stattracker:latest
-                  environment-variables: |
-                      'DATABASE_URL=${{ secrets.DATABASE_URL }}'
-                      'NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }}'
-                      'GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}'
-                      'GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}'
 
             - name: Deploy to Amazon ECS service
               uses: aws-actions/amazon-ecs-deploy-task-definition@v1
               with:
                   task-definition: ${{ steps.render-app-container.outputs.task-definition }}
-                  service: Stattracker-app
+                  service: Stattracker
                   cluster: Stattracker

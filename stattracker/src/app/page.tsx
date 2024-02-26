@@ -4,6 +4,8 @@ import { authOptions } from './api/auth/[...nextauth]/options';
 export default async function Home() {
     const session = await getServerSession(authOptions);
 
+    console.log(process.env.DATABASE_URL);
+
     return (
         <>
             {session ? (

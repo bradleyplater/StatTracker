@@ -37,12 +37,12 @@ export default class GamesService {
             teamCreatedBy: {
                 id: response?.teamCreatedById,
                 name: response?.teamCreatedBy.name,
-                admins: [],
                 players: [],
             },
             players: response.players.map((player) => {
                 return {
                     id: player?.id,
+                    authId: player?.authId,
                     firstName: player?.firstName,
                     surname: player?.surname,
                     shootingSide: player?.shooting_side,
@@ -157,12 +157,12 @@ export default class GamesService {
                 teamCreatedBy: {
                     id: game.teamCreatedById,
                     name: game.teamCreatedBy.name,
-                    admins: [],
                     players: [],
                 },
                 players: game.players.map((player) => {
                     return {
                         id: player?.id,
+                        authId: player?.authId,
                         firstName: player?.firstName,
                         surname: player?.surname,
                         shootingSide: player?.shooting_side,

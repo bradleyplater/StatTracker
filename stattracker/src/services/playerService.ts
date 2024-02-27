@@ -4,10 +4,10 @@ import { Player } from '@/types/playerTypes';
 export default class PlayerService {
     constructor() {}
 
-    static async GetPlayerByUserId(userId: string) {
+    static async GetPlayerById(id: string) {
         const response = await prisma.players.findFirst({
             where: {
-                userid: userId,
+                id: id,
             },
         });
 
@@ -15,6 +15,33 @@ export default class PlayerService {
 
         const player = {
             id: response?.id,
+            authId: response?.authId,
+            firstName: response?.firstName,
+            surname: response?.surname,
+            shootingSide: response?.shooting_side,
+            goals: response?.numberOfGoals,
+            assists: response?.numberOfAssists,
+            gamesPlayed: response?.gamesPlayed,
+            pims: response?.totalPenaltyDuration,
+            userId: response?.userid,
+            totalPoints: response?.totalPoints,
+        } as Player;
+
+        return player;
+    }
+
+    static async GetPlayerByAuthId(authId: string) {
+        const response = await prisma.players.findFirst({
+            where: {
+                authId: authId,
+            },
+        });
+
+        if (response == null) return null;
+
+        const player = {
+            id: response?.id,
+            authId: response?.authId,
             firstName: response?.firstName,
             surname: response?.surname,
             shootingSide: response?.shooting_side,
@@ -37,6 +64,7 @@ export default class PlayerService {
         response.forEach((player) => {
             players.push({
                 id: player?.id,
+                authId: player?.authId,
                 firstName: player?.firstName,
                 surname: player?.surname,
                 shootingSide: player?.shooting_side,

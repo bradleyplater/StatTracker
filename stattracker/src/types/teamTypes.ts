@@ -4,7 +4,6 @@ import { Player } from './playerTypes';
 export type Team = {
     id: string;
     name: string;
-    admins: string[];
     players: Player[];
 };
 

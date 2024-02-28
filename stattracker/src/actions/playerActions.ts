@@ -5,7 +5,7 @@ import PlayerService from '@/services/playerService';
 import { Player, playerValidation } from '@/types/playerTypes';
 import { redirect } from 'next/navigation';
 import prisma from '../../prisma/prisma';
-import { Session, getSession } from '@auth0/nextjs-auth0';
+import { Session, getSession, updateSession } from '@auth0/nextjs-auth0';
 
 export async function createPlayerInDb(prevState: any, formData: FormData) {
     const session = (await getSession()) as Session;
@@ -64,6 +64,11 @@ export async function createPlayerInDb(prevState: any, formData: FormData) {
         console.log('Creating new player failed: ', error);
         redirect('/Error');
     }
+
+    await updateSession({
+        ...session,
+        user: { ...session?.user, playerId: playerData?.id },
+    });
 
     redirect('/Profile');
 }

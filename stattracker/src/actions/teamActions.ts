@@ -3,16 +3,15 @@
 import prisma from '../../prisma/prisma';
 
 import { generateRandom6DigitNumber } from '@/Helpers/numberHelpers';
-import { authOptions } from '@/app/api/auth/[...nextauth]/options';
 import PlayerService from '@/services/playerService';
 import TeamService from '@/services/teamService';
 import { Player, playerValidation } from '@/types/playerTypes';
 import { Team, addPlayerValidation, teamValidation } from '@/types/teamTypes';
-import { Session, getServerSession } from 'next-auth';
+import { Session, getSession } from '@auth0/nextjs-auth0';
 import { redirect } from 'next/navigation';
 
 export async function createTeamInDb(prevState: any, formData: FormData) {
-    const session = await getServerSession(authOptions);
+    const session = await getSession();
 
     const teamData = {
         name: formData.get('teamName') as string,
@@ -69,7 +68,7 @@ export async function addPlayerToTeamAction(
     prevState: any,
     formData: FormData
 ) {
-    const session = await getServerSession(authOptions);
+    const session = (await getSession()) as Session;
 
     const teamAndPlayer = {
         teamId: formData.get('teamId') as string,
@@ -102,7 +101,7 @@ export async function addPlayerToTeamAction(
         let id = 'PLR' + generateRandom6DigitNumber();
 
         while (idIsInDB && iteration <= 5) {
-            const player = await PlayerService.GetPlayerByUserId(id);
+            const player = await PlayerService.GetPlayerById(id);
 
             if (player != null) {
                 console.log(`iteration ${iteration}: id already in use ${id}`);
@@ -118,6 +117,7 @@ export async function addPlayerToTeamAction(
             await prisma.players.create({
                 data: {
                     id: playerData.id,
+                    authId: '',
                     firstName: playerData.firstName,
                     surname: playerData.surname,
                     shooting_side: parseInt(playerData.shootingSide.toString()),

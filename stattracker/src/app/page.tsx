@@ -1,11 +1,13 @@
-import { getServerSession } from 'next-auth';
+import { getSession } from '@auth0/nextjs-auth0';
 
 export default async function Home() {
-    const session = true;
+    const session = await getSession();
+
+    console.log(session?.user.playerId);
 
     return (
         <>
-            {session ? (
+            {session?.user ? (
                 <h1 className="text-slate-900">You are logged in</h1>
             ) : (
                 <h1 className="text-slate-900">You are logged out</h1>

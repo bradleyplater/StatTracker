@@ -1,9 +1,10 @@
 import prisma from '../../prisma/prisma';
 import { Player } from '@/types/playerTypes';
 import { Team } from '@/types/teamTypes';
+import { Session } from '@auth0/nextjs-auth0';
 import { Prisma } from '@prisma/client';
-import { Session } from 'next-auth';
 import { redirect } from 'next/navigation';
+import PlayerService from './playerService';
 
 export default class TeamService {
     constructor() {}
@@ -11,6 +12,7 @@ export default class TeamService {
     static async GetAllTeams(): Promise<Team[]> {
         const response = await prisma.teams.findMany({
             include: {
+                admins: true,
                 players: {
                     include: {
                         player: true,
@@ -25,6 +27,7 @@ export default class TeamService {
             teams.push({
                 id: team.id,
                 name: team?.name as string,
+                admins: team?.admins.map((admin) => admin.id),
                 players: team.players.map((player) => {
                     return {
                         id: player?.player.id,
@@ -53,6 +56,7 @@ export default class TeamService {
                 id: id,
             },
             include: {
+                admins: true,
                 players: {
                     include: {
                         player: true,
@@ -65,6 +69,7 @@ export default class TeamService {
             return {
                 id: response.id,
                 name: response?.name as string,
+                admins: response?.admins.map((admin) => admin.id),
                 players: response.players.map((player) => {
                     return {
                         id: player?.player.id,
@@ -91,13 +96,19 @@ export default class TeamService {
         team: Team,
         session: Session
     ): Promise<string | { error: string }> {
+        const player = await PlayerService.GetPlayerByAuthId(session.user.sub);
+
+        if (!player) {
+            redirect('/Error');
+        }
+
         try {
             const response = await prisma.teams.create({
                 data: {
                     id: team.id,
                     name: team.name.toLowerCase(),
                     admins: {
-                        connect: { id: session?.user.id as string },
+                        connect: { id: player.id as string },
                     },
                 },
             });

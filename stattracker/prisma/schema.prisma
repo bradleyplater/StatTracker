@@ -42,7 +42,7 @@ model Penalties {
 
 model Players {
   id                                                 String            @id
-  authId                                             String            @default("")
+  authId                                             String            @unique
   shooting_side                                      Int?
   userid                                             String?
   firstName                                          String?
@@ -59,6 +59,8 @@ model Players {
   totalPenaltyDuration                               Int              @default(0)
   teams                                              PlayersInTeams[]
   shooting_side_id                                   Shooting_side?   @relation(fields: [shooting_side], references: [id])
+  adminForTeamId                                     String?
+  adminForTeam                                       Teams?           @relation(fields: [adminForTeamId], references: [id])
 }
 
 model PlayersInTeams {
@@ -81,6 +83,7 @@ model Teams {
   name                                              String          @unique
   games                                             Games[]
   players                                           PlayersInTeams[]
+  admins                                            Players[]
 } 
 
 model Sessions {

@@ -12,7 +12,6 @@ export default async function Profile(pageProps: PageProps) {
     if (!session) {
         redirect('/login');
     }
-
     var response = await PlayerService.GetPlayerByAuthId(session.user.sub);
 
     if (response === null) {

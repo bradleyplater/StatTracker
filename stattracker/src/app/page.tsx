@@ -3,8 +3,6 @@ import { getSession } from '@auth0/nextjs-auth0';
 export default async function Home() {
     const session = await getSession();
 
-    console.log(session?.user.playerId);
-
     return (
         <>
             {session?.user ? (

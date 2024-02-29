@@ -7,20 +7,17 @@ import {
 import { NextApiRequest, NextApiResponse } from 'next';
 import PlayerService from '@/services/playerService';
 
-//UPDATE SESSION WHEN PLAYER IS CREATED
-
 const afterCallback = async (req: any, session: any, state: any) => {
-    console.log('I am getting called after callback', session);
     if (session.user) {
         const player = await PlayerService.GetPlayerByAuthId(session.user.sub);
 
         if (!player) {
-            state.returnTo = 'http://localhost:3000/CreatePlayer';
+            state.returnTo = `${process.env.BASE_URL}/CreatePlayer`;
         }
         session.user.playerId = player?.id;
         return session;
     } else {
-        console.log('user not found', session);
+        console.log('user not found');
     }
 
     return session;

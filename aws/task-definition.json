@@ -30,19 +30,19 @@
             "secrets": [
                 {
                     "name": "DATABASE_URL",
-                    "valueFrom": "arn:aws:secretsmanager:eu-west-2:730335400535:secret:Stattracker-prod-db-url-GqaY5n"
+                    "valueFrom": "arn:aws:secretsmanager:eu-west-2:730335400535:secret:Stattracker-prod-db-url-GqaY5n:DATABASE_URL"
                 },
                 {
                     "name": "NEXTAUTH_SECRET",
-                    "valueFrom": "arn:aws:secretsmanager:eu-west-2:730335400535:secret:Stattracker-auth-secret-1j1C5b"
+                    "valueFrom": "arn:aws:secretsmanager:eu-west-2:730335400535:secret:Stattracker-auth-secret-1j1C5b:NEXTAUTH_SECRET"
                 },
                 {
                     "name": "GOOGLE_CLIENT_ID",
-                    "valueFrom": "arn:aws:secretsmanager:eu-west-2:730335400535:secret:Stattracker-google-id-F1HSmR"
+                    "valueFrom": "arn:aws:secretsmanager:eu-west-2:730335400535:secret:Stattracker-google-id-F1HSmR:GOOGLE_CLIENT_ID"
                 },
                 {
                     "name": "GOOGLE_CLIENT_SECRET",
-                    "valueFrom": "arn:aws:secretsmanager:eu-west-2:730335400535:secret:Stattracker-google-secret-uxuiKz"
+                    "valueFrom": "arn:aws:secretsmanager:eu-west-2:730335400535:secret:Stattracker-google-secret-uxuiKz:GOOGLE_CLIENT_SECRET"
                 }
             ],
             "logConfiguration": {

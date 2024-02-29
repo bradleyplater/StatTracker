@@ -3,6 +3,7 @@ import { z } from 'zod';
 
 export type Player = {
     id: string;
+    authId: string;
     number: number | undefined;
     firstName: string;
     surname: string;

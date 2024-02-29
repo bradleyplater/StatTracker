@@ -1,4 +1,5 @@
 'use client';
+import { useUser } from '@auth0/nextjs-auth0/client';
 import { Bars3Icon } from '@heroicons/react/16/solid';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -10,6 +11,7 @@ type NavbarProps = {
 
 export default function NavBar(props: NavbarProps) {
     const [isOpen, setIsOpen] = useState(false);
+    const { user } = useUser();
 
     const pathname = usePathname();
 
@@ -27,17 +29,14 @@ export default function NavBar(props: NavbarProps) {
                 <div className="flex items-center p-5 bg-teal-900 gap-4 w-full justify-between md:w-auto">
                     <h1 className="text-nowrap">Stat Tracker</h1>
                     <div className="hidden md:block md:w-full">
-                        {props.hasSession ? (
+                        {user ? (
                             <div className="flex w-full justify-between">
                                 <Link href="/Profile">Profile</Link>
                                 <Link href="/Teams">Teams</Link>
-                                <Link href="/api/auth/signout">Log out</Link>
+                                <Link href="/api/auth/logout">Log out</Link>
                             </div>
                         ) : (
-                            <Link
-                                className="w-full"
-                                href="/api/auth/signin?callbackUrl=/Profile"
-                            >
+                            <Link className="w-full" href="/api/auth/login">
                                 Login
                             </Link>
                         )}
@@ -73,16 +72,13 @@ export default function NavBar(props: NavbarProps) {
                             <Link
                                 onClick={handleClick}
                                 className="w-full py-1"
-                                href="/api/auth/signout"
+                                href="/api/auth/logout"
                             >
                                 Log out
                             </Link>
                         </>
                     ) : (
-                        <Link
-                            className="w-full"
-                            href="/api/auth/signin?callbackUrl=/Profile"
-                        >
+                        <Link className="w-full" href="/api/auth/login">
                             Login
                         </Link>
                     )}

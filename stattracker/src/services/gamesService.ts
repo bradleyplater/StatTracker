@@ -43,6 +43,7 @@ export default class GamesService {
             players: response.players.map((player) => {
                 return {
                     id: player?.id,
+                    authId: player?.authId,
                     firstName: player?.firstName,
                     surname: player?.surname,
                     shootingSide: player?.shooting_side,
@@ -163,6 +164,7 @@ export default class GamesService {
                 players: game.players.map((player) => {
                     return {
                         id: player?.id,
+                        authId: player?.authId,
                         firstName: player?.firstName,
                         surname: player?.surname,
                         shootingSide: player?.shooting_side,

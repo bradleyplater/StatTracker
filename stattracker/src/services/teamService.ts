@@ -1,9 +1,10 @@
 import prisma from '../../prisma/prisma';
 import { Player } from '@/types/playerTypes';
 import { Team } from '@/types/teamTypes';
+import { Session } from '@auth0/nextjs-auth0';
 import { Prisma } from '@prisma/client';
-import { Session } from 'next-auth';
 import { redirect } from 'next/navigation';
+import PlayerService from './playerService';
 
 export default class TeamService {
     constructor() {}
@@ -30,6 +31,7 @@ export default class TeamService {
                 players: team.players.map((player) => {
                     return {
                         id: player?.player.id,
+                        authId: player?.player.authId,
                         number: player.playerNumber,
                         firstName: player?.player.firstName,
                         surname: player?.player.surname,
@@ -71,6 +73,7 @@ export default class TeamService {
                 players: response.players.map((player) => {
                     return {
                         id: player?.player.id,
+                        authId: player?.player.authId,
                         number: player.playerNumber,
                         firstName: player?.player.firstName,
                         surname: player?.player.surname,
@@ -93,13 +96,19 @@ export default class TeamService {
         team: Team,
         session: Session
     ): Promise<string | { error: string }> {
+        const player = await PlayerService.GetPlayerByAuthId(session.user.sub);
+
+        if (!player) {
+            redirect('/Error');
+        }
+
         try {
             const response = await prisma.teams.create({
                 data: {
                     id: team.id,
                     name: team.name.toLowerCase(),
                     admins: {
-                        connect: { id: session?.user.id as string },
+                        connect: { id: player.id as string },
                     },
                 },
             });

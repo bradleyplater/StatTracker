@@ -1,15 +1,14 @@
 'use server';
 
 import { generateRandom6DigitNumber } from '@/Helpers/numberHelpers';
-import { authOptions } from '@/app/api/auth/[...nextauth]/options';
 import PlayerService from '@/services/playerService';
 import { Player, playerValidation } from '@/types/playerTypes';
-import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 import prisma from '../../prisma/prisma';
+import { Session, getSession, updateSession } from '@auth0/nextjs-auth0';
 
 export async function createPlayerInDb(prevState: any, formData: FormData) {
-    const session = await getServerSession(authOptions);
+    const session = (await getSession()) as Session;
 
     const playerData = {
         firstName: formData.get('firstname') as string,
@@ -35,7 +34,7 @@ export async function createPlayerInDb(prevState: any, formData: FormData) {
     let id = 'PLR' + generateRandom6DigitNumber();
 
     while (idIsInDB && iteration <= 5) {
-        const player = await PlayerService.GetPlayerByUserId(id);
+        const player = await PlayerService.GetPlayerById(id);
 
         if (player != null) {
             console.log(`iteration ${iteration}: id already in use ${id}`);
@@ -51,10 +50,10 @@ export async function createPlayerInDb(prevState: any, formData: FormData) {
         await prisma.players.create({
             data: {
                 id: playerData.id,
+                authId: session.user.sub,
                 firstName: playerData.firstName,
                 surname: playerData.surname,
                 shooting_side: parseInt(playerData.shootingSide.toString()),
-                userid: session?.user.id,
                 numberOfGoals: 0,
                 numberOfAssists: 0,
                 gamesPlayed: 0,
@@ -65,6 +64,11 @@ export async function createPlayerInDb(prevState: any, formData: FormData) {
         console.log('Creating new player failed: ', error);
         redirect('/Error');
     }
+
+    await updateSession({
+        ...session,
+        user: { ...session?.user, playerId: playerData?.id },
+    });
 
     redirect('/Profile');
 }

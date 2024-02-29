@@ -2,8 +2,7 @@ import type { Metadata } from 'next';
 import { Jost } from 'next/font/google';
 import './globals.css';
 import NavBar from '@/Components/NavBar';
-import { getServerSession } from 'next-auth';
-import { authOptions } from './api/auth/[...nextauth]/options';
+import { UserProvider } from '@auth0/nextjs-auth0/client';
 
 const jost = Jost({ subsets: ['latin'] });
 
@@ -16,16 +15,16 @@ export default async function RootLayout({
 }: {
     children: React.ReactNode;
 }) {
-    const session = await getServerSession(authOptions);
-
     return (
         <html lang="en">
-            <body
-                className={`${jost.className} flex flex-col min-h-screen text-slate-100 text-sm w-screen overflow-x-hidden`}
-            >
-                <NavBar hasSession={session !== null}></NavBar>
-                {children}
-            </body>
+            <UserProvider>
+                <body
+                    className={`${jost.className} flex flex-col min-h-screen text-slate-100 text-sm w-screen overflow-x-hidden`}
+                >
+                    <NavBar hasSession={false}></NavBar>
+                    {children}
+                </body>
+            </UserProvider>
         </html>
     );
 }

@@ -1,22 +1,18 @@
-import { getServerSession } from 'next-auth';
-import { authOptions } from '../api/auth/[...nextauth]/options';
 import { redirect } from 'next/navigation';
 import PlayerService from '@/services/playerService';
-
 import { PageProps } from '@/types/GenericTypes';
-
 import StatsPanel from '@/Components/StatsPanel';
+import { getSession } from '@auth0/nextjs-auth0';
 
 // TRYING TO GET QUERY PARAMS TO MAKE ACTIVE STATES ON BUTTONS
 
 export default async function Profile(pageProps: PageProps) {
-    const session = await getServerSession(authOptions);
+    const session = await getSession();
 
     if (!session) {
         redirect('/login');
     }
-
-    var response = await PlayerService.GetPlayerByUserId(session.user.id);
+    var response = await PlayerService.GetPlayerByAuthId(session.user.sub);
 
     if (response === null) {
         redirect('/CreatePlayer');

@@ -37,6 +37,7 @@ export default class GamesService {
             teamCreatedBy: {
                 id: response?.teamCreatedById,
                 name: response?.teamCreatedBy.name,
+                admins: [],
                 players: [],
             },
             players: response.players.map((player) => {
@@ -157,6 +158,7 @@ export default class GamesService {
                 teamCreatedBy: {
                     id: game.teamCreatedById,
                     name: game.teamCreatedBy.name,
+                    admins: [],
                     players: [],
                 },
                 players: game.players.map((player) => {

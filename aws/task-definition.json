@@ -1,5 +1,5 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:eu-west-2:730335400535:task-definition/Stattracker:30",
+    "taskDefinitionArn": "arn:aws:ecs:eu-west-2:730335400535:task-definition/Stattracker:33",
     "containerDefinitions": [
         {
             "name": "StatTracker",
@@ -42,20 +42,20 @@
             "volumesFrom": [],
             "secrets": [
                 {
-                    "name": "DATABASE_URL",
-                    "valueFrom": "arn:aws:secretsmanager:eu-west-2:730335400535:secret:Stattracker-prod-db-url-GqaY5n:DATABASE_URL::"
-                },
-                {
-                    "name": "AUTH0_SECRET",
-                    "valueFrom": "arn:aws:secretsmanager:eu-west-2:730335400535:secret:stattracker-auth0-yXQpvI:AUTH0_SECRET::"
-                },
-                {
                     "name": "AUTH0_CLIENT_ID",
                     "valueFrom": "arn:aws:secretsmanager:eu-west-2:730335400535:secret:stattracker-auth0-yXQpvI:AUTH0_CLIENT_ID::"
                 },
                 {
                     "name": "AUTH0_CLIENT_SECRET",
                     "valueFrom": "arn:aws:secretsmanager:eu-west-2:730335400535:secret:stattracker-auth0-yXQpvI:AUTH0_CLIENT_SECRET::"
+                },
+                {
+                    "name": "AUTH0_SECRET",
+                    "valueFrom": "arn:aws:secretsmanager:eu-west-2:730335400535:secret:stattracker-auth0-yXQpvI:AUTH0_SECRET::"
+                },
+                {
+                    "name": "DATABASE_URL",
+                    "valueFrom": "arn:aws:secretsmanager:eu-west-2:730335400535:secret:Stattracker-prod-db-url-GqaY5n:DATABASE_URL::"
                 }
             ],
             "logConfiguration": {
@@ -65,7 +65,17 @@
                     "awslogs-group": "/ecs/Stattracker",
                     "awslogs-region": "eu-west-2",
                     "awslogs-stream-prefix": "ecs"
-                }
+                },
+                "secretOptions": []
+            },
+            "healthCheck": {
+                "command": [
+                    "CMD-SHELL",
+                    "curl -f https:/stattracker.co.uk/api/health || exit 1"
+                ],
+                "interval": 30,
+                "timeout": 5,
+                "retries": 3
             },
             "systemControls": []
         }
@@ -74,12 +84,15 @@
     "taskRoleArn": "arn:aws:iam::730335400535:role/ecsTaskExecutionRole",
     "executionRoleArn": "arn:aws:iam::730335400535:role/ecsTaskExecutionRole",
     "networkMode": "awsvpc",
-    "revision": 30,
+    "revision": 33,
     "volumes": [],
     "status": "ACTIVE",
     "requiresAttributes": [
         {
             "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.24"
         },
         {
             "name": "ecs.capability.execution-role-awslogs"
@@ -95,6 +108,9 @@
         },
         {
             "name": "com.amazonaws.ecs.capability.task-iam-role"
+        },
+        {
+            "name": "ecs.capability.container-health-check"
         },
         {
             "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
@@ -115,7 +131,7 @@
         "cpuArchitecture": "X86_64",
         "operatingSystemFamily": "LINUX"
     },
-    "registeredAt": "2024-03-05T11:59:53.962Z",
-    "registeredBy": "arn:aws:sts::730335400535:assumed-role/GitHubAction-AssumeRoleWithAction/GitHub_to_AWS_via_FederatedOIDC",
+    "registeredAt": "2024-03-05T17:05:26.427Z",
+    "registeredBy": "arn:aws:iam::730335400535:root",
     "tags": []
 }

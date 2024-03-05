@@ -1,5 +1,5 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:eu-west-2:730335400535:task-definition/Stattracker:25",
+    "taskDefinitionArn": "arn:aws:ecs:eu-west-2:730335400535:task-definition/Stattracker:30",
     "containerDefinitions": [
         {
             "name": "StatTracker",
@@ -27,11 +27,11 @@
             "environment": [
                 {
                     "name": "BASE_URL",
-                    "value": "http://Stattracker-elb-1025777587.eu-west-2.elb.amazonaws.com"
+                    "value": "https://stattracker.co.uk"
                 },
                 {
                     "name": "AUTH0_BASE_URL",
-                    "value": "http://Stattracker-elb-1025777587.eu-west-2.elb.amazonaws.com"
+                    "value": "https://stattracker.co.uk"
                 },
                 {
                     "name": "AUTH0_ISSUER_BASE_URL",
@@ -65,16 +65,16 @@
                     "awslogs-group": "/ecs/Stattracker",
                     "awslogs-region": "eu-west-2",
                     "awslogs-stream-prefix": "ecs"
-                },
-                "secretOptions": []
-            }
+                }
+            },
+            "systemControls": []
         }
     ],
     "family": "Stattracker",
     "taskRoleArn": "arn:aws:iam::730335400535:role/ecsTaskExecutionRole",
     "executionRoleArn": "arn:aws:iam::730335400535:role/ecsTaskExecutionRole",
     "networkMode": "awsvpc",
-    "revision": 25,
+    "revision": 30,
     "volumes": [],
     "status": "ACTIVE",
     "requiresAttributes": [
@@ -115,7 +115,7 @@
         "cpuArchitecture": "X86_64",
         "operatingSystemFamily": "LINUX"
     },
-    "registeredAt": "2024-02-29T14:27:08.114Z",
-    "registeredBy": "arn:aws:iam::730335400535:root",
+    "registeredAt": "2024-03-05T11:59:53.962Z",
+    "registeredBy": "arn:aws:sts::730335400535:assumed-role/GitHubAction-AssumeRoleWithAction/GitHub_to_AWS_via_FederatedOIDC",
     "tags": []
 }

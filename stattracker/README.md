@@ -62,3 +62,7 @@ GRANT SELECT, UPDATE, DELETE ON TABLE public.TABLE_NAME TO "StatTrackerApp" WITH
 
 GRANT pg_write_all_data TO "StatTrackerApp";
 GRANT pg_read_all_data TO "StatTrackerApp";
+
+# Deployment notes
+
+When adding environment variables / secrets to task definition. Make sure to give the task executioner role the new permission to access the secret

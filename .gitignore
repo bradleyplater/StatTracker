@@ -19,6 +19,7 @@
 # misc
 /stattracker/.DS_Store
 /stattracker/*.pem
+*.pem
 
 # debug
 /stattracker/npm-debug.log*

@@ -2,14 +2,19 @@ import { redirect } from 'next/navigation';
 import PlayerService from '@/services/playerService';
 import { PageProps } from '@/types/GenericTypes';
 import StatsPanel from '@/Components/StatsPanel';
-import { getSession } from '@auth0/nextjs-auth0';
+import { Session, getSession } from '@auth0/nextjs-auth0';
 
 // TRYING TO GET QUERY PARAMS TO MAKE ACTIVE STATES ON BUTTONS
 
 export default async function Profile(pageProps: PageProps) {
-    const session = await getSession();
+    console.log('I am on the profile page');
 
-    console.log('I am on the Profile page with this session', session);
+    let session: Session | null | undefined;
+    try {
+        session = await getSession();
+    } catch (exception) {
+        console.log(exception);
+    }
 
     if (!session) {
         redirect('/api/auth/login');

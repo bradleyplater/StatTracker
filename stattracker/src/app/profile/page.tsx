@@ -36,8 +36,7 @@ export default async function Profile() {
                 </div>
             </div>
             <div className="text-gray-900">
-                THIS IS A TEST PAGE TO SEE IF StatsPanel is the issue
-                {/* <StatsPanel player={response} /> */}
+                <StatsPanel player={response} />
             </div>
         </>
     );

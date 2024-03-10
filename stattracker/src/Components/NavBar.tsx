@@ -33,12 +33,12 @@ export default function NavBar(props: NavbarProps) {
                             <div className="flex w-full justify-between">
                                 <Link href="/Profile">Profile</Link>
                                 <Link href="/Teams">Teams</Link>
-                                <Link href="/api/auth/logout">Log out</Link>
+                                <a href="/api/auth/logout">Log out</a>
                             </div>
                         ) : (
-                            <Link className="w-full" href="/api/auth/login">
+                            <a className="w-full" href="/api/auth/login">
                                 Login
-                            </Link>
+                            </a>
                         )}
                     </div>
                     <div className="w-6 h-6 md:hidden">
@@ -69,18 +69,18 @@ export default function NavBar(props: NavbarProps) {
                                 Teams
                             </Link>
 
-                            <Link
+                            <a
                                 onClick={handleClick}
                                 className="w-full py-1"
                                 href="/api/auth/logout"
                             >
                                 Log out
-                            </Link>
+                            </a>
                         </>
                     ) : (
-                        <Link className="w-full" href="/api/auth/login">
+                        <a className="w-full" href="/api/auth/login">
                             Login
-                        </Link>
+                        </a>
                     )}
                 </div>
             </nav>

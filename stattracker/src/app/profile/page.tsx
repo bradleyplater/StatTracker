@@ -1,12 +1,11 @@
 import { redirect } from 'next/navigation';
 import PlayerService from '@/services/playerService';
-import { PageProps } from '@/types/GenericTypes';
 import StatsPanel from '@/Components/StatsPanel';
 import { Session, getSession } from '@auth0/nextjs-auth0';
 
 // TRYING TO GET QUERY PARAMS TO MAKE ACTIVE STATES ON BUTTONS
 
-export default async function Profile(pageProps: PageProps) {
+export default async function Profile() {
     console.log('I am on the profile page');
 
     let session: Session | null | undefined;
@@ -37,7 +36,8 @@ export default async function Profile(pageProps: PageProps) {
                 </div>
             </div>
             <div className="text-gray-900">
-                <StatsPanel player={response} />
+                THIS IS A TEST PAGE TO SEE IF StatsPanel is the issue
+                {/* <StatsPanel player={response} /> */}
             </div>
         </>
     );

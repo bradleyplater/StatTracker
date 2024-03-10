@@ -2,9 +2,11 @@ import TeamService from '@/services/teamService';
 import { ChevronRightIcon, PlusIcon } from '@heroicons/react/16/solid';
 import Link from 'next/link';
 import '@/extensions/stringExtensions';
+import { getSession } from '@auth0/nextjs-auth0';
 
 export default async function Teams() {
     const teams = await TeamService.GetAllTeams();
+    const session = await getSession();
 
     return (
         <>

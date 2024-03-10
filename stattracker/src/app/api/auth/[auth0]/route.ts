@@ -14,12 +14,14 @@ const afterCallback = async (req: any, session: any, state: any) => {
         if (!player) {
             state.returnTo = `${process.env.BASE_URL}/CreatePlayer`;
         }
+        console.log('User found during callback: ', player);
         session.user.playerId = player?.id;
         return session;
     } else {
         console.log('user not found');
     }
 
+    console.log('Session returned after callback: ', session);
     return session;
 };
 

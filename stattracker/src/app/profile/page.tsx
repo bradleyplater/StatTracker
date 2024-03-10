@@ -9,8 +9,10 @@ import { getSession } from '@auth0/nextjs-auth0';
 export default async function Profile(pageProps: PageProps) {
     const session = await getSession();
 
+    console.log('I am on the Profile page with this session', session);
+
     if (!session) {
-        redirect('/login');
+        redirect('/api/auth/login');
     }
     var response = await PlayerService.GetPlayerByAuthId(session.user.sub);
 

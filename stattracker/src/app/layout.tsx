@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-sync-scripts */
 import type { Metadata } from 'next';
 import { Jost } from 'next/font/google';
 import './globals.css';
@@ -17,6 +18,12 @@ export default async function RootLayout({
 }) {
     return (
         <html lang="en">
+            <head>
+                <script
+                    type="text/javascript"
+                    src="https://app.termly.io/resource-blocker/8cc8968f-a1ea-4e10-a0bd-d7c55c1afdbc?autoBlock=on"
+                ></script>
+            </head>
             <UserProvider>
                 <body
                     className={`${jost.className} flex flex-col min-h-screen text-slate-100 text-sm w-screen overflow-x-hidden`}

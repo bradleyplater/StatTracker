@@ -5,11 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 
-type NavbarProps = {
-    hasSession: boolean;
-};
-
-export default function NavBar(props: NavbarProps) {
+export default function NavBar() {
     const [isOpen, setIsOpen] = useState(false);
     const { user } = useUser();
 
@@ -52,7 +48,7 @@ export default function NavBar(props: NavbarProps) {
                         isOpen ? 'block' : 'hidden'
                     } flex flex-col bg-teal-900 justify-center items-center  text-center divide-y`}
                 >
-                    {props.hasSession ? (
+                    {user ? (
                         <>
                             <Link
                                 onClick={handleClick}

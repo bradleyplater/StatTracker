@@ -28,7 +28,7 @@ export default async function RootLayout({
                 <body
                     className={`${jost.className} flex flex-col min-h-screen text-slate-100 text-sm w-screen overflow-x-hidden`}
                 >
-                    <NavBar hasSession={false}></NavBar>
+                    <NavBar></NavBar>
                     {children}
                 </body>
             </UserProvider>

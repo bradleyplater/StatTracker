@@ -3,8 +3,6 @@ import PlayerService from '@/services/playerService';
 import StatsPanel from '@/Components/StatsPanel';
 import { Session, getSession } from '@auth0/nextjs-auth0';
 
-// TRYING TO GET QUERY PARAMS TO MAKE ACTIVE STATES ON BUTTONS
-
 export default async function Profile() {
     console.log('I am on the profile page');
 

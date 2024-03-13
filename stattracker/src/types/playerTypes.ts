@@ -8,11 +8,16 @@ export type Player = {
     firstName: string;
     surname: string;
     shootingSide: ShootingSide;
+    stats: PlayerStats[];
+};
+
+export type PlayerStats = {
+    id: string;
+    seasonName: string;
     goals: number;
     assists: number;
     gamesPlayed: number;
     pims: number;
-    userId: string;
     totalPoints: number;
 };
 

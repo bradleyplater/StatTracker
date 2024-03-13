@@ -17,7 +17,7 @@ model Games {
   isHome                                            Boolean
   goalsConceeded                                    Int
   goalsScored                                       Int
-  players                                           Players[]
+  players                                           PlayerStats[]
   penalties                                         Penalties[]
 }
 
@@ -26,13 +26,13 @@ model Goals {
   game                                               Games            @relation(fields: [gameId], references: [id])
   gameId                                             String
   scoredByPlayerId                                   String
-  scoredBy                                           Players          @relation(name: "scoredBy", fields: [scoredByPlayerId], references: [id])
-  assistedBy                                         Players[]        @relation(name: "assistedBy")
+  scoredBy                                           PlayerStats          @relation(name: "scoredBy", fields: [scoredByPlayerId], references: [id])
+  assistedBy                                         PlayerStats[]        @relation(name: "assistedBy")
 }
 
 model Penalties {
   id                                                 Int              @id @default(autoincrement())
-  player                                             Players          @relation(fields: [playerId], references: [id])      
+  player                                             PlayerStats      @relation(fields: [playerId], references: [id])      
   playerId                                           String
   game                                               Games            @relation(fields: [gameId], references: [id])
   gameId                                             String
@@ -44,9 +44,21 @@ model Players {
   id                                                 String            @id
   authId                                             String            @unique
   shooting_side                                      Int?
-  userid                                             String?
   firstName                                          String?
   surname                                            String?
+  stats                                              PlayerStats[]
+  teams                                              PlayersInTeams[]
+  shooting_side_id                                   Shooting_side?   @relation(fields: [shooting_side], references: [id])
+  adminForTeamId                                     String?
+  adminForTeam                                       Teams?           @relation(fields: [adminForTeamId], references: [id])
+}
+
+model PlayerStats {
+  id                                                 String           @id
+  player                                             Players          @relation(fields: [playerId], references: [id])
+  playerId                                           String
+  season                                             Season           @relation(fields: [seasonId], references: [id])
+  seasonId                                           String
   goals                                              Goals[]          @relation(name: "scoredBy")
   numberOfGoals                                      Int?
   assists                                            Goals[]          @relation(name: "assistedBy")
@@ -57,10 +69,6 @@ model Players {
   totalPoints                                        Int              @default(0)
   penalties                                          Penalties[]
   totalPenaltyDuration                               Int              @default(0)
-  teams                                              PlayersInTeams[]
-  shooting_side_id                                   Shooting_side?   @relation(fields: [shooting_side], references: [id])
-  adminForTeamId                                     String?
-  adminForTeam                                       Teams?           @relation(fields: [adminForTeamId], references: [id])
 }
 
 model PlayersInTeams {
@@ -97,4 +105,13 @@ model Shooting_side {
   id                                           Int           @id
   side                                         String        @unique @db.VarChar(255)
   players                                      Players[]     
+}
+
+model Season {
+  id                    String            @id
+  name                  String            @unique
+  startDate             DateTime
+  endDate               DateTime
+
+  playerStats           PlayerStats[]
 }

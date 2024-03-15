@@ -19,18 +19,13 @@ export default function StatsPanel(props: StatsPanelProps) {
 
     return (
         <>
-            <div className="flex flex-row justify-center gap-4 text-gray-900">
-                <TeamSelect
-                    selectedTeam={selectedTeam}
-                    onSelectChange={(event: ChangeEvent<HTMLSelectElement>) =>
-                        handleOnChange(event)
-                    }
-                />
-            </div>
             <div className="flex flex-col justify-center items-center p-4">
                 <h3 className="mb-4 text-2xl font-bold">Stats</h3>
 
-                <DataTable columns={profileColumns} data={[props.player]} />
+                <DataTable
+                    columns={profileColumns}
+                    data={[props.player.stats[0]]}
+                />
             </div>
         </>
     );

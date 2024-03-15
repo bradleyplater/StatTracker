@@ -54,18 +54,18 @@ model Players {
 }
 
 model PlayerStats {
-  id                                                 String           @id
+  id                                                 String           @id @default(uuid())
   player                                             Players          @relation(fields: [playerId], references: [id])
   playerId                                           String
   season                                             Season           @relation(fields: [seasonId], references: [id])
   seasonId                                           String
   goals                                              Goals[]          @relation(name: "scoredBy")
-  numberOfGoals                                      Int?
+  numberOfGoals                                      Int?             @default(0)
   assists                                            Goals[]          @relation(name: "assistedBy")
-  numberOfAssists                                    Int?
+  numberOfAssists                                    Int?             @default(0)
   games                                              Games[]
-  gamesPlayed                                        Int?
-  pims                                               Int?
+  gamesPlayed                                        Int?             @default(0)
+  pims                                               Int?             @default(0)
   totalPoints                                        Int              @default(0)
   penalties                                          Penalties[]
   totalPenaltyDuration                               Int              @default(0)

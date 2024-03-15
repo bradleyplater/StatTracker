@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE "PlayerStats" ALTER COLUMN "numberOfGoals" SET DEFAULT 0,
+ALTER COLUMN "numberOfAssists" SET DEFAULT 0,
+ALTER COLUMN "gamesPlayed" SET DEFAULT 0,
+ALTER COLUMN "pims" SET DEFAULT 0;

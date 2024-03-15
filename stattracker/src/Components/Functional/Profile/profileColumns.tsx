@@ -1,9 +1,9 @@
 import { Button } from '@/Components/ui/button';
-import { Player } from '@/types/playerTypes';
+import { Player, PlayerStats } from '@/types/playerTypes';
 import { ArrowsUpDownIcon } from '@heroicons/react/16/solid';
 import { ColumnDef } from '@tanstack/react-table';
 
-export const profileColumns: ColumnDef<Player>[] = [
+export const profileColumns: ColumnDef<PlayerStats>[] = [
     {
         accessorKey: 'gamesPlayed',
         header: ({ column }) => {

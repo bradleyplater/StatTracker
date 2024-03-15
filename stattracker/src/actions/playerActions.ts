@@ -29,41 +29,7 @@ export async function createPlayerInDb(prevState: any, formData: FormData) {
         };
     }
 
-    let idIsInDB = true;
-    let iteration = 0;
-    let id = 'PLR' + generateRandom6DigitNumber();
-
-    while (idIsInDB && iteration <= 5) {
-        const player = await PlayerService.GetPlayerById(id);
-
-        if (player != null) {
-            console.log(`iteration ${iteration}: id already in use ${id}`);
-            idIsInDB = true;
-            iteration++;
-        } else {
-            idIsInDB = false;
-            playerData.id = id;
-        }
-    }
-
-    try {
-        await prisma.players.create({
-            data: {
-                id: playerData.id,
-                authId: session.user.sub,
-                firstName: playerData.firstName,
-                surname: playerData.surname,
-                shooting_side: parseInt(playerData.shootingSide.toString()),
-                numberOfGoals: 0,
-                numberOfAssists: 0,
-                gamesPlayed: 0,
-                pims: 0,
-            },
-        });
-    } catch (error) {
-        console.log('Creating new player failed: ', error);
-        redirect('/Error');
-    }
+    await PlayerService.CreateNewPlayer(playerData, session.user.sub);
 
     await updateSession({
         ...session,

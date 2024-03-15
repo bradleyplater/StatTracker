@@ -66,3 +66,7 @@ GRANT pg_read_all_data TO "StatTrackerApp";
 # Deployment notes
 
 When adding environment variables / secrets to task definition. Make sure to give the task executioner role the new permission to access the secret
+
+# Adding new seasons
+
+Migration - 20240313134118_added_seasons_and_player_stats includes the season inserts

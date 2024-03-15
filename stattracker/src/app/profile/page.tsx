@@ -4,18 +4,13 @@ import StatsPanel from '@/Components/StatsPanel';
 import { Session, getSession } from '@auth0/nextjs-auth0';
 
 export default async function Profile() {
-    console.log('I am on the profile page');
-
     let session: Session | null | undefined;
-    try {
-        session = await getSession();
-    } catch (exception) {
-        console.log(exception);
-    }
+    session = await getSession();
 
     if (!session) {
         redirect('/api/auth/login');
     }
+
     var response = await PlayerService.GetPlayerByAuthId(session.user.sub);
 
     if (response === null) {

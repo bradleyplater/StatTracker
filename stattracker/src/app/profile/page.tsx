@@ -29,7 +29,10 @@ export default async function Profile() {
                 </div>
             </div>
             <div className="text-gray-900">
-                <StatsPanel player={response} />
+                <StatsPanel
+                    player={response}
+                    currentSeason={session.user.season}
+                />
             </div>
         </>
     );

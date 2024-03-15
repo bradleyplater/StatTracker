@@ -13,6 +13,7 @@ export type Player = {
 
 export type PlayerStats = {
     id: string;
+    seasonId: string;
     seasonName: string;
     goals: number;
     assists: number;

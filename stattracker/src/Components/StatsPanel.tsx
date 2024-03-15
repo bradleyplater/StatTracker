@@ -1,21 +1,24 @@
 'use client';
-
-import { ChangeEvent, useState } from 'react';
-import TeamSelect from './TeamSelect';
 import { Player } from '@/types/playerTypes';
 import { DataTable } from './Functional/Team/data-table';
 import { profileColumns } from './Functional/Profile/profileColumns';
+import { Season } from '@/types/seasonTypes';
+import { redirect } from 'next/navigation';
 
 type StatsPanelProps = {
     player: Player;
+    currentSeason: Season;
 };
 
 export default function StatsPanel(props: StatsPanelProps) {
-    const [selectedTeam, updateSelectedTeam] = useState('overall');
+    const playerStatsThisSeason = props.player.stats.find(
+        (stats) => stats.seasonId == props.currentSeason.id
+    );
 
-    const handleOnChange = (event: ChangeEvent<HTMLSelectElement>) => {
-        updateSelectedTeam(event.target.value as string);
-    };
+    if (!playerStatsThisSeason) {
+        console.log('Player has no stats object for this season');
+        redirect('/Error');
+    }
 
     return (
         <>
@@ -24,7 +27,7 @@ export default function StatsPanel(props: StatsPanelProps) {
 
                 <DataTable
                     columns={profileColumns}
-                    data={[props.player.stats[0]]}
+                    data={[playerStatsThisSeason]}
                 />
             </div>
         </>

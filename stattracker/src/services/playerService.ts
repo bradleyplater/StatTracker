@@ -1,6 +1,6 @@
-import { PlayerStats } from '@prisma/client';
+import { PlayerStats as PrismaPlayerStats } from '@prisma/client';
 import prisma from '../../prisma/prisma';
-import { Player } from '@/types/playerTypes';
+import { Player, PlayerStats } from '@/types/playerTypes';
 import { generateRandom6DigitNumber } from '@/Helpers/numberHelpers';
 import { redirect } from 'next/navigation';
 import SeasonService from './seasonService';
@@ -55,16 +55,14 @@ export default class PlayerService {
             stats: response.stats.map((stat) => {
                 return {
                     id: stat.id,
-                    playerId: stat.playerId,
-                    seasonId: stat.seasonId,
                     seasonName: stat.season.name,
+                    seasonId: stat.season.id,
                     goals: stat.numberOfGoals,
                     assists: stat.numberOfAssists,
                     gamesPlayed: stat.gamesPlayed,
                     pims: stat.pims,
                     totalPoints: stat.totalPoints,
-                    totalPenaltyDuration: stat.totalPenaltyDuration,
-                };
+                } as PlayerStats;
             }),
         } as Player;
 
@@ -109,7 +107,7 @@ export default class PlayerService {
         }
 
         const seasons = await SeasonService.GetAllSeasons();
-        const playerStats: PlayerStats[] = [];
+        const playerStats: PrismaPlayerStats[] = [];
 
         seasons.forEach((season) => {
             playerStats.push({

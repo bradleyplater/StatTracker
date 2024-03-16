@@ -18,7 +18,7 @@ const afterCallback = async (req: any, session: any, state: any) => {
         }
         console.log('User found during callback: ', player);
         session.user.playerId = player?.id;
-        session.user.season = await GetCurrentSeason();
+        session.user.season = await GetCurrentSeason(); // TODO: Add logic to check if player has stats object for this season, if not go create one.
         return session;
     } else {
         console.log('user not found');

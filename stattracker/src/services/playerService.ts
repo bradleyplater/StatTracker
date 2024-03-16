@@ -4,6 +4,7 @@ import { Player, PlayerStats } from '@/types/playerTypes';
 import { generateRandom6DigitNumber } from '@/Helpers/numberHelpers';
 import { redirect } from 'next/navigation';
 import SeasonService from './seasonService';
+import { getSession } from '@auth0/nextjs-auth0';
 
 export default class PlayerService {
     constructor() {}
@@ -92,6 +93,12 @@ export default class PlayerService {
         let idIsInDB = true;
         let iteration = 0;
         let id = 'PLR' + generateRandom6DigitNumber();
+        const session = await getSession();
+
+        if (!session) {
+            console.log('No session available to create new player');
+            redirect('/Error');
+        }
 
         while (idIsInDB && iteration <= 5) {
             const player = await PlayerService.GetPlayerById(id);
@@ -110,17 +117,20 @@ export default class PlayerService {
         const playerStats: PrismaPlayerStats[] = [];
 
         seasons.forEach((season) => {
-            playerStats.push({
-                playerId: playerData.id,
-                seasonId: season.id,
-                gamesPlayed: 0,
-                numberOfAssists: 0,
-                numberOfGoals: 0,
-                pims: 0,
-                totalPenaltyDuration: 0,
-                totalPoints: 0,
-                id: crypto.randomUUID(),
-            });
+            const currentDate = new Date();
+            if (currentDate > season.startDate) {
+                playerStats.push({
+                    playerId: playerData.id,
+                    seasonId: season.id,
+                    gamesPlayed: 0,
+                    numberOfAssists: 0,
+                    numberOfGoals: 0,
+                    pims: 0,
+                    totalPenaltyDuration: 0,
+                    totalPoints: 0,
+                    id: crypto.randomUUID(),
+                });
+            }
         });
 
         try {
@@ -133,9 +143,9 @@ export default class PlayerService {
                     shooting_side: parseInt(playerData.shootingSide.toString()),
                     stats: {
                         createMany: {
-                            data: seasons.map((season) => {
+                            data: playerStats.map((stats) => {
                                 return {
-                                    seasonId: season.id,
+                                    seasonId: stats.seasonId,
                                     gamesPlayed: 0,
                                     numberOfAssists: 0,
                                     numberOfGoals: 0,

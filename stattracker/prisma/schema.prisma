@@ -63,6 +63,8 @@ model PlayerStats {
   pims                                               Int?             @default(0)
   totalPoints                                        Int              @default(0)
   totalPenaltyDuration                               Int              @default(0)
+  teamId                                             String?          
+  playerInTeam                                       PlayersInTeams?  @relation(fields: [playerId, teamId], references: [playerId, teamId])
 }
 
 model PlayersInTeams {
@@ -71,23 +73,9 @@ model PlayersInTeams {
   team                                              Teams            @relation(fields: [teamId], references: [id])
   teamId                                            String
   playerNumber                                      Int?             @unique  
-  stats                                             PlayerTeamStats[]
+  stats                                             PlayerStats[]
   
   @@id([playerId, teamId])
-}
-
-model PlayerTeamStats {
-  id                                                 String           @id @default(uuid())
-  player                                             PlayersInTeams   @relation(fields: [playerId], references: [playerId])
-  playerId                                           String
-  season                                             Season           @relation(fields: [seasonId], references: [id])
-  seasonId                                           String
-  numberOfGoals                                      Int?             @default(0)
-  numberOfAssists                                    Int?             @default(0)
-  gamesPlayed                                        Int?             @default(0)
-  pims                                               Int?             @default(0)
-  totalPoints                                        Int              @default(0)
-  totalPenaltyDuration                               Int              @default(0)
 }
 
 model Teams {
@@ -118,5 +106,4 @@ model Season {
   endDate               DateTime
 
   playerStats           PlayerStats[]
-  playerTeamStats       PlayerTeamStats[]
 }

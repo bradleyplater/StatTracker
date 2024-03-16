@@ -89,7 +89,13 @@ export default class PlayerService {
         return players;
     }
 
-    static async CreateNewPlayer(playerData: Player, authId: string) {
+    /**
+     * Creates a new player in the database. PlayerId is generated as part of this method too
+     *
+     * @param {Player} playerData - Player object which to add to the database
+     * @return {string} The Id of the newly created player
+     */
+    static async CreateNewPlayer(playerData: Player): Promise<string> {
         let idIsInDB = true;
         let iteration = 0;
         let id = 'PLR' + generateRandom6DigitNumber();
@@ -122,6 +128,7 @@ export default class PlayerService {
                 playerStats.push({
                     playerId: playerData.id,
                     seasonId: season.id,
+                    teamId: null,
                     gamesPlayed: 0,
                     numberOfAssists: 0,
                     numberOfGoals: 0,
@@ -137,7 +144,7 @@ export default class PlayerService {
             await prisma.players.create({
                 data: {
                     id: playerData.id,
-                    authId: authId,
+                    authId: playerData.authId,
                     firstName: playerData.firstName,
                     surname: playerData.surname,
                     shooting_side: parseInt(playerData.shootingSide.toString()),
@@ -163,5 +170,6 @@ export default class PlayerService {
             console.log('Creating new player failed: ', error);
             redirect('/Error');
         }
+        return id;
     }
 }

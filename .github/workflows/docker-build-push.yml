@@ -9,6 +9,21 @@ permissions:
     id-token: write
     contents: read
 jobs:
+    Deploy-Db-Changes:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+            - name: Use Node.js
+              uses: actions/setup-node@v3
+              with:
+                  node-version: '20.x'
+            - name: Run database deploy command
+              working-directory: stattracker
+              run: |
+                  npm ci
+                  npm run deploy-db
+
     Docker-Build-Push:
         runs-on: ubuntu-latest
         steps:

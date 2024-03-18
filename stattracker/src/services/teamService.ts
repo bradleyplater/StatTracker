@@ -1,7 +1,7 @@
 import prisma from '../../prisma/prisma';
 import { Player } from '@/types/playerTypes';
 import { Team } from '@/types/teamTypes';
-import { Session } from '@auth0/nextjs-auth0';
+import { Session, getSession } from '@auth0/nextjs-auth0';
 import { Prisma } from '@prisma/client';
 import { redirect } from 'next/navigation';
 import PlayerService from './playerService';
@@ -28,22 +28,7 @@ export default class TeamService {
                 id: team.id,
                 name: team?.name as string,
                 admins: team?.admins.map((admin) => admin.id),
-                players: team.players.map((player) => {
-                    return {
-                        id: player?.player.id,
-                        authId: player?.player.authId,
-                        number: player.playerNumber,
-                        firstName: player?.player.firstName,
-                        surname: player?.player.surname,
-                        shootingSide: player?.player.shooting_side,
-                        goals: player?.player.numberOfGoals,
-                        assists: player?.player.numberOfAssists,
-                        gamesPlayed: player?.player.gamesPlayed,
-                        pims: player?.player.totalPenaltyDuration,
-                        userId: player?.player.userid,
-                        totalPoints: player?.player.totalPoints,
-                    } as Player;
-                }),
+                players: [],
             });
         });
 
@@ -59,6 +44,7 @@ export default class TeamService {
                 admins: true,
                 players: {
                     include: {
+                        stats: true,
                         player: true,
                     },
                 },
@@ -72,18 +58,23 @@ export default class TeamService {
                 admins: response?.admins.map((admin) => admin.id),
                 players: response.players.map((player) => {
                     return {
-                        id: player?.player.id,
-                        authId: player?.player.authId,
+                        id: player?.playerId,
                         number: player.playerNumber,
+                        authId: player.player.authId,
                         firstName: player?.player.firstName,
                         surname: player?.player.surname,
                         shootingSide: player?.player.shooting_side,
-                        goals: player?.player.numberOfGoals,
-                        assists: player?.player.numberOfAssists,
-                        gamesPlayed: player?.player.gamesPlayed,
-                        pims: player?.player.totalPenaltyDuration,
-                        userId: player?.player.userid,
-                        totalPoints: player?.player.totalPoints,
+                        stats: player.stats.map((stat) => {
+                            return {
+                                id: stat.id,
+                                gamesPlayed: stat.gamesPlayed,
+                                seasonId: stat.seasonId,
+                                goals: stat.numberOfGoals,
+                                assists: stat.numberOfAssists,
+                                pims: stat.pims,
+                                totalPoints: stat.totalPoints,
+                            };
+                        }),
                     } as Player;
                 }),
             } as Team;
@@ -132,22 +123,46 @@ export default class TeamService {
         playerId: string,
         playerNumber: number
     ) {
-        await prisma.teams.update({
+        const session = await getSession();
+
+        const player = await prisma.players.findUnique({
             where: {
-                id: teamId,
-            },
-            data: {
-                players: {
-                    create: [
-                        {
-                            player: {
-                                connect: { id: playerId },
-                            },
-                            playerNumber: playerNumber,
-                        },
-                    ],
-                },
+                id: playerId,
             },
         });
+
+        try {
+            await prisma.teams.update({
+                where: {
+                    id: teamId,
+                },
+                data: {
+                    players: {
+                        create: {
+                            player: { connect: { id: playerId } },
+                            playerNumber: playerNumber,
+                        },
+                    },
+                },
+            });
+        } catch (exception) {
+            console.log('Failed to update team with new player ', exception);
+        }
+
+        try {
+            await prisma.playerStats.create({
+                data: {
+                    id: crypto.randomUUID(),
+                    playerId: playerId,
+                    teamId: teamId,
+                    seasonId: session?.user.season.id,
+                },
+            });
+        } catch (exception) {
+            console.log(
+                'Failed to add new player stat object for player in team ',
+                exception
+            );
+        }
     }
 }

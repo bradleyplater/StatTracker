@@ -8,12 +8,25 @@ export type Player = {
     firstName: string;
     surname: string;
     shootingSide: ShootingSide;
+    stats: PlayerStats[];
+};
+
+export type PlayerStats = {
+    id: string;
+    seasonId: string;
+    seasonName: string;
+    teamId: string | undefined;
     goals: number;
     assists: number;
     gamesPlayed: number;
     pims: number;
-    userId: string;
     totalPoints: number;
+};
+
+export type PlayerTeamStats = PlayerStats & {
+    firstName: string;
+    surname: string;
+    number: number;
 };
 
 // Validation Type

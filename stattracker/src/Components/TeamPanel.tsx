@@ -1,15 +1,20 @@
 'use client';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, createContext, useState } from 'react';
 import TeamPlayersList from './TeamPlayersList';
 import { Team } from '@/types/teamTypes';
 import TeamGamesList from './TeamsGamesList';
 import { Game } from '@/types/gameTypes';
+import { Season } from '@/types/seasonTypes';
 
 type TeamPanelProps = {
     team: Team;
     games: Game[];
     currentUserId: string;
+    currentSeason: Season;
 };
+
+export const SeasonContext = createContext<Season | null>(null);
+
 export default function TeamPanel(props: TeamPanelProps) {
     const [panel, updatePanel] = useState('players');
 
@@ -55,8 +60,9 @@ export default function TeamPanel(props: TeamPanelProps) {
                         <option value="games">Games</option>
                     </select>
                 </div>
-
-                <div>{renderPanel()}</div>
+                <SeasonContext.Provider value={props.currentSeason}>
+                    <div>{renderPanel()}</div>
+                </SeasonContext.Provider>
             </div>
         </>
     );

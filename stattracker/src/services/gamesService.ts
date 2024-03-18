@@ -3,6 +3,8 @@ import prisma from '../../prisma/prisma';
 import { redirect } from 'next/navigation';
 import { Player } from '@/types/playerTypes';
 import { Penalties } from '@/enums/Penalties';
+import PlayerService from './playerService';
+import { getSession } from '@auth0/nextjs-auth0';
 
 export default class GamesService {
     constructor() {}
@@ -31,7 +33,7 @@ export default class GamesService {
                     id: goals.id,
                     gameId: goals.gameId,
                     scoredBy: goals.scoredByPlayerId,
-                    assistedBy: [],
+                    assistedBy: goals.assistedById,
                 };
             }),
             teamCreatedBy: {
@@ -44,14 +46,11 @@ export default class GamesService {
                 return {
                     id: player?.id,
                     authId: player?.authId,
+                    number: undefined,
                     firstName: player?.firstName,
                     surname: player?.surname,
                     shootingSide: player?.shooting_side,
-                    goals: player?.numberOfGoals,
-                    assists: player?.numberOfAssists,
-                    gamesPlayed: player?.gamesPlayed,
-                    pims: player?.pims,
-                    userId: player?.userid,
+                    stats: [],
                 } as Player;
             }),
             penalties: response.penalties.map((penalty) => {
@@ -73,6 +72,12 @@ export default class GamesService {
     }
 
     static async CreateGame(game: PostGame) {
+        const session = await getSession();
+        if (!session) {
+            console.log('CreateGame: No session found');
+            redirect('/Error');
+        }
+
         try {
             await prisma.games.create({
                 data: {
@@ -92,41 +97,11 @@ export default class GamesService {
             redirect('/Error');
         }
 
-        try {
-            await prisma.players.updateMany({
-                where: {
-                    id: {
-                        in: game.players.map((player) => player.id),
-                    },
-                },
-                data: {
-                    gamesPlayed: { increment: 1 },
-                },
-            });
-        } catch (error) {
-            console.log('Incrementing players gamesPlayed failed: ', error);
-            redirect('/Error');
-        }
-
-        try {
-            await prisma.playersInTeams.updateMany({
-                where: {
-                    teamId: game.teamCreatedBy,
-                    playerId: {
-                        in: game.players.map((player) => player.id),
-                    },
-                },
-                data: {
-                    gamesPlayed: { increment: 1 },
-                },
-            });
-        } catch (error) {
-            console.log(
-                'Incrementing playersInTeams gamesPlayed failed: ',
-                error
-            );
-            redirect('/Error');
-        }
+        await PlayerService.IncrementGamesPlayed(
+            session.user.season.id,
+            game.teamCreatedBy,
+            game.players
+        );
     }
 
     static async GetAllGamesForTeam(teamId: string): Promise<Game[]> {
@@ -161,20 +136,7 @@ export default class GamesService {
                     admins: [],
                     players: [],
                 },
-                players: game.players.map((player) => {
-                    return {
-                        id: player?.id,
-                        authId: player?.authId,
-                        firstName: player?.firstName,
-                        surname: player?.surname,
-                        shootingSide: player?.shooting_side,
-                        goals: player?.numberOfGoals,
-                        assists: player?.numberOfAssists,
-                        gamesPlayed: player?.gamesPlayed,
-                        pims: player?.pims,
-                        userId: player?.userid,
-                    } as Player;
-                }),
+                players: [],
                 penalties: game.penalties.map((penalty) => {
                     return {
                         offender: penalty.playerId,
@@ -194,5 +156,31 @@ export default class GamesService {
         return games;
     }
 
-    static async UpdateYourTeamGoals() {}
+    /**
+     * Updates goals scored by the team that created the game
+     *
+     * @param {string} gameId Id for the game you want to increment assists for
+     */
+    static async UpdateGamesGoalsScored(gameId: string) {
+        let goalsScored: number;
+        try {
+            const response = await prisma.games.update({
+                where: {
+                    id: gameId,
+                },
+                data: {
+                    goalsScored: { increment: 1 },
+                },
+            });
+            goalsScored = response.goalsScored;
+        } catch (error) {
+            console.log(
+                'Updating incrementing goal count for player in team: ',
+                error
+            );
+            redirect('/Error');
+        }
+
+        return goalsScored;
+    }
 }

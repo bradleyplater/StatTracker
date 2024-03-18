@@ -1,9 +1,9 @@
 import { Button } from '@/Components/ui/button';
-import { Player } from '@/types/playerTypes';
+import { Player, PlayerStats, PlayerTeamStats } from '@/types/playerTypes';
 import { ArrowsUpDownIcon } from '@heroicons/react/16/solid';
 import { ColumnDef } from '@tanstack/react-table';
 
-export const teamPlayerDataColumns: ColumnDef<Player>[] = [
+export const teamPlayerDataColumns: ColumnDef<PlayerTeamStats>[] = [
     {
         accessorKey: 'number',
         header: '#',

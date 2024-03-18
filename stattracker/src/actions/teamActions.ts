@@ -61,7 +61,7 @@ export async function createTeamInDb(prevState: any, formData: FormData) {
         };
     }
 
-    redirect('/Team');
+    redirect(`Teams/${teamData.id}`);
 }
 
 export async function addPlayerToTeamAction(
@@ -96,39 +96,18 @@ export async function addPlayerToTeamAction(
             };
         }
 
-        let idIsInDB = true;
-        let iteration = 0;
-        let id = 'PLR' + generateRandom6DigitNumber();
-
-        while (idIsInDB && iteration <= 5) {
-            const player = await PlayerService.GetPlayerById(id);
-
-            if (player != null) {
-                console.log(`iteration ${iteration}: id already in use ${id}`);
-                idIsInDB = true;
-                iteration++;
-            } else {
-                idIsInDB = false;
-                playerData.id = id;
-            }
-        }
-
         try {
-            await prisma.players.create({
-                data: {
-                    id: playerData.id,
-                    authId: '',
-                    firstName: playerData.firstName,
-                    surname: playerData.surname,
-                    shooting_side: parseInt(playerData.shootingSide.toString()),
-                    numberOfGoals: 0,
-                    numberOfAssists: 0,
-                    gamesPlayed: 0,
-                    pims: 0,
-                },
+            const newPlayerId = await PlayerService.CreateNewPlayer({
+                id: playerData.id,
+                authId: '',
+                firstName: playerData.firstName,
+                surname: playerData.surname,
+                shootingSide: parseInt(playerData.shootingSide.toString()),
+                stats: [],
+                number: undefined,
             });
 
-            teamAndPlayer.playerId = playerData.id;
+            teamAndPlayer.playerId = newPlayerId;
         } catch (error) {
             console.log('Creating new player failed: ', error);
             redirect('/Error');

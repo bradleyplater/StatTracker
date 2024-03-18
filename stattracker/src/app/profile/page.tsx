@@ -3,21 +3,14 @@ import PlayerService from '@/services/playerService';
 import StatsPanel from '@/Components/StatsPanel';
 import { Session, getSession } from '@auth0/nextjs-auth0';
 
-// TRYING TO GET QUERY PARAMS TO MAKE ACTIVE STATES ON BUTTONS
-
 export default async function Profile() {
-    console.log('I am on the profile page');
-
     let session: Session | null | undefined;
-    try {
-        session = await getSession();
-    } catch (exception) {
-        console.log(exception);
-    }
+    session = await getSession();
 
     if (!session) {
         redirect('/api/auth/login');
     }
+
     var response = await PlayerService.GetPlayerByAuthId(session.user.sub);
 
     if (response === null) {
@@ -36,7 +29,10 @@ export default async function Profile() {
                 </div>
             </div>
             <div className="text-gray-900">
-                <StatsPanel player={response} />
+                <StatsPanel
+                    player={response}
+                    currentSeason={session.user.season}
+                />
             </div>
         </>
     );

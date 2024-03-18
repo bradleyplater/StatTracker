@@ -2,6 +2,8 @@ import { Penalty } from '@/types/penaltyTypes';
 import prisma from '../../prisma/prisma';
 import { redirect } from 'next/navigation';
 import { Penalties } from '@/enums/Penalties';
+import PlayerService from './playerService';
+import { getSession } from '@auth0/nextjs-auth0';
 
 export default class PenaltyService {
     // SET UP PENALTY SERVICE HERE
@@ -30,6 +32,12 @@ export default class PenaltyService {
     }
 
     static async CreatePenalty(penalty: Penalty) {
+        const session = await getSession();
+        if (!session) {
+            console.log('CreateGame: No session found');
+            redirect('/Error');
+        }
+
         try {
             await prisma.penalties.create({
                 data: {
@@ -37,11 +45,7 @@ export default class PenaltyService {
                     game: {
                         connect: { id: penalty.gameId },
                     },
-                    player: {
-                        connect: {
-                            id: penalty.offender,
-                        },
-                    },
+                    playerId: penalty.offender,
                     duration: penalty.duration,
                 },
             });
@@ -50,42 +54,13 @@ export default class PenaltyService {
             redirect('/Error');
         }
 
-        try {
-            await prisma.players.update({
-                where: {
-                    id: penalty.offender,
-                },
-                data: {
-                    totalPenaltyDuration: { increment: penalty.duration },
-                },
-            });
-        } catch (error) {
-            console.log(
-                'error incrementing penalty duration count for player: ',
-                error
-            );
-            redirect('/Error');
-        }
+        await PlayerService.IncrementPenalties(
+            penalty.offender,
+            session.user.season.id,
+            penalty.teamId,
+            penalty.duration
+        );
 
-        try {
-            await prisma.playersInTeams.update({
-                where: {
-                    playerId_teamId: {
-                        playerId: penalty.offender,
-                        teamId: penalty.teamId as string,
-                    },
-                },
-                data: {
-                    totalPenaltyDuration: { increment: penalty.duration },
-                },
-            });
-        } catch (error) {
-            console.log(
-                'error incrementing penalty duration for player in team: ',
-                error
-            );
-            redirect('/Error');
-        }
         return { latestPenalty: penalty };
     }
 }

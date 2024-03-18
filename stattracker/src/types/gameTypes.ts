@@ -4,7 +4,7 @@ import { Player } from './playerTypes';
 import { Penalty } from './penaltyTypes';
 
 export type Goals = {
-    id: number;
+    id: string;
     gameId: string;
     scoredBy: string;
     assistedBy: string[];

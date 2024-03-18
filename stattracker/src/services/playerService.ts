@@ -172,4 +172,201 @@ export default class PlayerService {
         }
         return id;
     }
+
+    /**
+     * Updates playerStats record to increment their games played.
+     *
+     * @param {string} seasonId Id for the season you want to increment games played for
+     * @param {string | null} teamId Id for the team you want to increment games played for. Leave null if no team need updating
+     * @param {{id: string}[]}playerIds Array of playerIds to update for.
+     */
+    static async IncrementGamesPlayed(
+        seasonId: string,
+        teamId: string | null,
+        playerIds: { id: string }[]
+    ) {
+        try {
+            await prisma.playerStats.updateMany({
+                where: {
+                    playerId: {
+                        in: playerIds.map((player) => player.id),
+                    },
+                    seasonId: seasonId,
+                    teamId: null,
+                },
+                data: {
+                    gamesPlayed: { increment: 1 },
+                },
+            });
+        } catch (exception) {
+            console.log('Failed to increment players overall games played');
+        }
+        if (teamId) {
+            try {
+                await prisma.playerStats.updateMany({
+                    where: {
+                        playerId: {
+                            in: playerIds.map((player) => player.id),
+                        },
+                        seasonId: seasonId,
+                        teamId: teamId,
+                    },
+                    data: {
+                        gamesPlayed: { increment: 1 },
+                    },
+                });
+            } catch (exception) {
+                console.log('Failed to increment players overall games played');
+            }
+        }
+    }
+
+    /**
+     * Updates playerStats record to increment their goals scored and total points.
+     *
+     * @param {string} seasonId Id for the season you want to increment goals scored for
+     * @param {string | null} teamId Id for the team you want to increment goals scored for. Leave null if no team need updating
+     * @param {string} playerId player to update
+     */
+    static async IncrementGoalsScoredAndTotalPoints(
+        playerId: string,
+        seasonId: string,
+        teamId: string | null
+    ) {
+        try {
+            await prisma.playerStats.updateMany({
+                where: {
+                    playerId: {
+                        in: [playerId].map((player) => player),
+                    },
+                    seasonId: seasonId,
+                    teamId: null,
+                },
+                data: {
+                    numberOfGoals: { increment: 1 },
+                    totalPoints: { increment: 1 },
+                },
+            });
+        } catch (exception) {
+            console.log('Failed to increment players overall goals scored');
+        }
+        if (teamId) {
+            try {
+                await prisma.playerStats.updateMany({
+                    where: {
+                        playerId: {
+                            in: [playerId].map((player) => player),
+                        },
+                        seasonId: seasonId,
+                        teamId: teamId,
+                    },
+                    data: {
+                        numberOfGoals: { increment: 1 },
+                        totalPoints: { increment: 1 },
+                    },
+                });
+            } catch (exception) {
+                console.log('Failed to increment players overall goals scored');
+            }
+        }
+    }
+
+    /**
+     * Updates playerStats record to increment their assists and total points.
+     *
+     * @param {string} seasonId Id for the season you want to increment assists for
+     * @param {string | null} teamId Id for the team you want to increment assists for. Leave null if no team need updating
+     * @param {string[]} playerId players to update
+     */
+    static async IncrementAssistsAndTotalPoints(
+        playerIds: string[],
+        seasonId: string,
+        teamId: string | null
+    ) {
+        try {
+            await prisma.playerStats.updateMany({
+                where: {
+                    playerId: {
+                        in: playerIds,
+                    },
+                    seasonId: seasonId,
+                    teamId: null,
+                },
+                data: {
+                    numberOfAssists: { increment: 1 },
+                    totalPoints: { increment: 1 },
+                },
+            });
+        } catch (exception) {
+            console.log('Failed to increment players overall assists');
+        }
+        if (teamId) {
+            try {
+                await prisma.playerStats.updateMany({
+                    where: {
+                        playerId: {
+                            in: playerIds,
+                        },
+                        seasonId: seasonId,
+                        teamId: teamId,
+                    },
+                    data: {
+                        numberOfAssists: { increment: 1 },
+                        totalPoints: { increment: 1 },
+                    },
+                });
+            } catch (exception) {
+                console.log('Failed to increment players overall assists');
+            }
+        }
+    }
+
+    /**
+     * Updates playerStats record to increment their goals scored and total points.
+     *
+     * @param {string} seasonId Id for the season you want to increment goals scored for
+     * @param {string | null} teamId Id for the team you want to increment goals scored for. Leave null if no team need updating
+     * @param {string} playerId player to update
+     */
+    static async IncrementPenalties(
+        playerId: string,
+        seasonId: string,
+        teamId: string | undefined,
+        penaltyDuration: number
+    ) {
+        try {
+            await prisma.playerStats.updateMany({
+                where: {
+                    playerId: {
+                        in: [playerId].map((player) => player),
+                    },
+                    seasonId: seasonId,
+                    teamId: null,
+                },
+                data: {
+                    totalPenaltyDuration: { increment: penaltyDuration },
+                },
+            });
+        } catch (exception) {
+            console.log('Failed to increment players overall penalties');
+        }
+        if (teamId) {
+            try {
+                await prisma.playerStats.updateMany({
+                    where: {
+                        playerId: {
+                            in: [playerId].map((player) => player),
+                        },
+                        seasonId: seasonId,
+                        teamId: teamId,
+                    },
+                    data: {
+                        totalPenaltyDuration: { increment: penaltyDuration },
+                    },
+                });
+            } catch (exception) {
+                console.log('Failed to increment players overall goals scored');
+            }
+        }
+    }
 }

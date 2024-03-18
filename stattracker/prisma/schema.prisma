@@ -33,6 +33,7 @@ model Penalties {
   id                                                 Int              @id @default(autoincrement())
   game                                               Games            @relation(fields: [gameId], references: [id])
   gameId                                             String
+  playerId                                           String
   type                                               String
   duration                                           Int              @default(0)
 }
@@ -65,6 +66,7 @@ model PlayerStats {
   totalPenaltyDuration                               Int              @default(0)
   teamId                                             String?          
   playerInTeam                                       PlayersInTeams?  @relation(fields: [playerId, teamId], references: [playerId, teamId])
+  
 }
 
 model PlayersInTeams {

@@ -69,4 +69,4 @@ jobs:
               with:
                   task-definition: ${{ steps.render-app-container.outputs.task-definition }}
                   service: Stattracker
-                  cluster: Stattracker
+                  cluster: Stattracker-cluster

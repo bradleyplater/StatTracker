@@ -99,7 +99,7 @@ export async function addPlayerToTeamAction(
         try {
             const newPlayerId = await PlayerService.CreateNewPlayer({
                 id: playerData.id,
-                authId: '',
+                authId: `DEFAULT-NO-AUTH-${crypto.randomUUID()}`, // This is so that the db has a unique authId even though the player isn't connected to a user
                 firstName: playerData.firstName,
                 surname: playerData.surname,
                 shootingSide: parseInt(playerData.shootingSide.toString()),

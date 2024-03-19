@@ -144,7 +144,7 @@ export default class PlayerService {
             await prisma.players.create({
                 data: {
                     id: playerData.id,
-                    authId: session.user.sub,
+                    authId: playerData.authId,
                     firstName: playerData.firstName,
                     surname: playerData.surname,
                     shooting_side: parseInt(playerData.shootingSide.toString()),

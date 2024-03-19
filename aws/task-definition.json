@@ -1,5 +1,5 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:eu-west-2:730335400535:task-definition/Stattracker:38",
+    "taskDefinitionArn": "arn:aws:ecs:eu-west-2:730335400535:task-definition/Stattracker:53",
     "containerDefinitions": [
         {
             "name": "StatTracker",
@@ -90,8 +90,8 @@
     "family": "Stattracker",
     "taskRoleArn": "arn:aws:iam::730335400535:role/ecsTaskExecutionRole",
     "executionRoleArn": "arn:aws:iam::730335400535:role/ecsTaskExecutionRole",
-    "networkMode": "awsvpc",
-    "revision": 38,
+    "networkMode": "bridge",
+    "revision": 53,
     "volumes": [],
     "status": "ACTIVE",
     "requiresAttributes": [
@@ -120,17 +120,11 @@
             "name": "ecs.capability.container-health-check"
         },
         {
-            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
-        },
-        {
-            "name": "ecs.capability.task-eni"
-        },
-        {
             "name": "com.amazonaws.ecs.capability.docker-remote-api.1.29"
         }
     ],
     "placementConstraints": [],
-    "compatibilities": ["EC2", "FARGATE"],
+    "compatibilities": ["EC2"],
     "requiresCompatibilities": ["EC2"],
     "cpu": "256",
     "memory": "512",
@@ -138,7 +132,7 @@
         "cpuArchitecture": "X86_64",
         "operatingSystemFamily": "LINUX"
     },
-    "registeredAt": "2024-03-09T09:25:15.919Z",
+    "registeredAt": "2024-03-13T21:07:15.584Z",
     "registeredBy": "arn:aws:iam::730335400535:root",
     "tags": []
 }

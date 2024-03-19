@@ -14,6 +14,7 @@ export async function createPlayerInDb(prevState: any, formData: FormData) {
         firstName: formData.get('firstname') as string,
         surname: formData.get('surname') as string,
         shootingSide: parseInt(formData.get('shootingSide') as string),
+        authId: session.user.sub,
     } as Player;
 
     const validatedFields = playerValidation.safeParse(playerData);
@@ -29,7 +30,7 @@ export async function createPlayerInDb(prevState: any, formData: FormData) {
         };
     }
 
-    await PlayerService.CreateNewPlayer(playerData, session.user.sub);
+    await PlayerService.CreateNewPlayer(playerData);
 
     await updateSession({
         ...session,

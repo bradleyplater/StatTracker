@@ -1,5 +1,5 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:eu-west-2:730335400535:task-definition/Stattracker:53",
+    "taskDefinitionArn": "arn:aws:ecs:eu-west-2:730335400535:task-definition/Stattracker:57",
     "containerDefinitions": [
         {
             "name": "StatTracker",
@@ -72,8 +72,7 @@
                     "awslogs-group": "/ecs/Stattracker",
                     "awslogs-region": "eu-west-2",
                     "awslogs-stream-prefix": "ecs"
-                },
-                "secretOptions": []
+                }
             },
             "healthCheck": {
                 "command": [
@@ -91,7 +90,7 @@
     "taskRoleArn": "arn:aws:iam::730335400535:role/ecsTaskExecutionRole",
     "executionRoleArn": "arn:aws:iam::730335400535:role/ecsTaskExecutionRole",
     "networkMode": "bridge",
-    "revision": 53,
+    "revision": 57,
     "volumes": [],
     "status": "ACTIVE",
     "requiresAttributes": [
@@ -132,7 +131,7 @@
         "cpuArchitecture": "X86_64",
         "operatingSystemFamily": "LINUX"
     },
-    "registeredAt": "2024-03-13T21:07:15.584Z",
+    "registeredAt": "2024-03-19T18:01:19.346Z",
     "registeredBy": "arn:aws:iam::730335400535:root",
     "tags": []
 }

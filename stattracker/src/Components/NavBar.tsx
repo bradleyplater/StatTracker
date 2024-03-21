@@ -4,6 +4,9 @@ import { Bars3Icon } from '@heroicons/react/16/solid';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
+import { Ceviche_One } from 'next/font/google';
+
+const cevicheOne = Ceviche_One({ weight: '400', subsets: ['latin'] });
 
 export default function NavBar() {
     const [isOpen, setIsOpen] = useState(false);
@@ -23,7 +26,11 @@ export default function NavBar() {
         <>
             <nav className="">
                 <div className="flex items-center p-5 bg-teal-900 gap-4 w-full justify-between md:w-auto">
-                    <h1 className="text-nowrap">Stat Tracker</h1>
+                    <h1
+                        className={`text-nowrap ${cevicheOne.className} text-base`}
+                    >
+                        Stat Tracker
+                    </h1>
                     <div className="hidden md:block md:w-full">
                         {user ? (
                             <div className="flex w-full justify-between">

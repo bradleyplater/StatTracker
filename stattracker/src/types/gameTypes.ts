@@ -28,6 +28,7 @@ export type PostGame = {
     opponentTeam: string;
     isHome: boolean;
     players: { id: string }[];
+    date: Date;
 };
 
 // TODO add regexs here for better validation

@@ -90,6 +90,7 @@ export default class GamesService {
                     },
                     goalsConceeded: 0,
                     goalsScored: 0,
+                    date: game.date,
                 },
             });
         } catch (error) {

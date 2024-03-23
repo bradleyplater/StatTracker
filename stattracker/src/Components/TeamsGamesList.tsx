@@ -46,7 +46,8 @@ export default function TeamGamesList(props: TeamGamesListProps) {
                                 <div className="flex flex-row justify-center">
                                     <p className="text-l font-bold">
                                         {game.date.toDateString()} -{' '}
-                                        {game.isHome ? 'Home' : 'Away'}
+                                        {game.isHome ? 'Home' : 'Away'} -{' '}
+                                        {game.type.toTitleCase()}
                                     </p>
                                 </div>
                                 <div className="flex flex-row justify-between">

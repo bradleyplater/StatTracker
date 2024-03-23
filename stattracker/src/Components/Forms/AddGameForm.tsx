@@ -8,6 +8,9 @@ import { useFormState } from 'react-dom';
 import { addGameAction } from '@/actions/gameActions';
 import Select from 'react-select';
 import { createPlayerOptions } from '@/Helpers/playerHelpers';
+import EnumSelect from '../EnumSelect';
+import { GameType } from '@/enums/GameType';
+import { createEnumOptions } from '@/Helpers/enumHelpers';
 
 export type AddGameFormProps = {
     team: Team;
@@ -61,6 +64,16 @@ export default function AddGameForm(props: AddGameFormProps) {
                         id="date"
                         name="date"
                         className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 sm:text-sm"
+                    />
+                </div>
+                <div className="grid w-full max-w-sm items-center gap-1">
+                    <Label htmlFor="type">Type</Label>
+
+                    <Select
+                        name="type"
+                        options={createEnumOptions(GameType)}
+                        className="basic-multi-select"
+                        classNamePrefix="select"
                     />
                 </div>
                 <div className="grid w-full max-w-sm items-center gap-1">

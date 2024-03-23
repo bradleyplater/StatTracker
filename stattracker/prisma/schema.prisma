@@ -20,6 +20,7 @@ model Games {
   players                                           Players[]
   penalties                                         Penalties[]
   date                                              DateTime
+  type                                              String          @default("challenge")   
 }
 
 model Goals {

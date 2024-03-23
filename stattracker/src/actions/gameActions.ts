@@ -17,6 +17,7 @@ export async function addGameAction(prevState: any, formData: FormData) {
         opponentTeam: formData.get('opponentTeam') as string,
         isHome: (formData.get('location') as string).toLowerCase() === 'home',
         date: new Date(formData.get('date') as string),
+        type: formData.get('type') as string,
         players: playerIds,
     } as PostGame;
 

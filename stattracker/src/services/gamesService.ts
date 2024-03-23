@@ -5,6 +5,7 @@ import { Player } from '@/types/playerTypes';
 import { Penalties } from '@/enums/Penalties';
 import PlayerService from './playerService';
 import { getSession } from '@auth0/nextjs-auth0';
+import { GameType } from '@/enums/GameType';
 
 export default class GamesService {
     constructor() {}
@@ -67,6 +68,7 @@ export default class GamesService {
             goalsConceeded: response?.goalsConceeded,
             goalsScored: response?.goalsScored,
             date: response.date,
+            type: response.type,
         };
 
         return game;
@@ -92,6 +94,7 @@ export default class GamesService {
                     goalsConceeded: 0,
                     goalsScored: 0,
                     date: game.date,
+                    type: game.type,
                 },
             });
         } catch (error) {
@@ -153,6 +156,7 @@ export default class GamesService {
                 goalsConceeded: game.goalsConceeded,
                 goalsScored: game.goalsScored,
                 date: game.date,
+                type: game.type,
             });
         });
 

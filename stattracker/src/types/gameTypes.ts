@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { Team } from './teamTypes';
 import { Player } from './playerTypes';
 import { Penalty } from './penaltyTypes';
+import { GameType } from '@/enums/GameType';
 
 export type Goals = {
     id: string;
@@ -21,6 +22,7 @@ export type Game = {
     players: Player[];
     penalties: Penalty[];
     date: Date;
+    type: string;
 };
 
 export type PostGame = {
@@ -30,6 +32,7 @@ export type PostGame = {
     isHome: boolean;
     players: { id: string }[];
     date: Date;
+    type: string;
 };
 
 // TODO add regexs here for better validation

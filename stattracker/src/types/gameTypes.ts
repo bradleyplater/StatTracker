@@ -20,6 +20,7 @@ export type Game = {
     goalsScored: number;
     players: Player[];
     penalties: Penalty[];
+    date: Date;
 };
 
 export type PostGame = {

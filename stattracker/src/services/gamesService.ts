@@ -66,6 +66,7 @@ export default class GamesService {
             isHome: response?.isHome,
             goalsConceeded: response?.goalsConceeded,
             goalsScored: response?.goalsScored,
+            date: response.date,
         };
 
         return game;
@@ -151,6 +152,7 @@ export default class GamesService {
                 isHome: game.isHome,
                 goalsConceeded: game.goalsConceeded,
                 goalsScored: game.goalsScored,
+                date: game.date,
             });
         });
 

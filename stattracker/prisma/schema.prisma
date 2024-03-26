@@ -39,6 +39,7 @@ model Penalties {
   playerId                                           String
   type                                               String
   duration                                           Int              @default(0)
+  time                                               Int              @default(0) // In seconds
 }
 
 model Players {

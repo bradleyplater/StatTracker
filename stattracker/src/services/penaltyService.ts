@@ -12,9 +12,6 @@ export default class PenaltyService {
             where: {
                 gameId: gameId,
             },
-            include: {
-                player: true,
-            },
         });
 
         const penalties: Penalty[] = [];
@@ -26,6 +23,7 @@ export default class PenaltyService {
                 duration: penalty.duration,
                 gameId: penalty.gameId,
                 teamId: undefined,
+                penaltyTimeInSeconds: penalty.time,
             });
         });
         return penalties;
@@ -47,6 +45,7 @@ export default class PenaltyService {
                     },
                     playerId: penalty.offender,
                     duration: penalty.duration,
+                    time: penalty.penaltyTimeInSeconds,
                 },
             });
         } catch (error) {

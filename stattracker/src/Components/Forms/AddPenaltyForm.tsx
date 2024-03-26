@@ -17,6 +17,7 @@ import { useContext } from 'react';
 import { GameContext } from '../Functional/Game/GameDisplay';
 import { getNumericEnumKeys } from '@/Helpers/enumHelpers';
 import { Penalties } from '@/enums/Penalties';
+import DualNumberInput from '../FormElements/DualNumberInput';
 
 export type AddPenaltyFormProps = {
     formAction: (payload: FormData) => void;
@@ -76,6 +77,17 @@ export default function AddPenaltyForm(props: AddPenaltyFormProps) {
                             name="penaltyDuration"
                             id="penaltyDuration"
                             options={penaltyDurationSelectLabels}
+                        />
+                    </div>
+                    <div className="space-y-1">
+                        <DualNumberInput
+                            legendLabel="Time of Penalty"
+                            firstInputLabel="Minute"
+                            firstInputName="minute"
+                            firstInputid="minute"
+                            secondInputLabel="Seconds"
+                            secondInputName="seconds"
+                            secondInputid="seconds"
                         />
                     </div>
                     <Input

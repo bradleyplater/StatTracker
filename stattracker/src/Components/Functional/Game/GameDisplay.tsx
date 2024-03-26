@@ -212,8 +212,9 @@ export default function GameDisplay(props: GameDisplayProps) {
                                                     <CardContent className="pb-4">
                                                         <div className="flex flex-col pt-2">
                                                             <p className="text-base">
-                                                                Penalty{' '}
-                                                                {index + 1}
+                                                                {formatDurationFromSeconds(
+                                                                    penalty.penaltyTimeInSeconds
+                                                                )}
                                                             </p>
                                                             <p className="text-base">
                                                                 {offenderName}

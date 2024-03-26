@@ -20,6 +20,7 @@ import {
 import AddPenaltyForm from '@/Components/Forms/AddPenaltyForm';
 import { addPenaltyAction } from '@/actions/penaltyActions';
 import { Penalties } from '@/enums/Penalties';
+import { formatDurationFromSeconds } from '@/Helpers/numberHelpers';
 
 export type GameDisplayProps = {
     game: Game;
@@ -145,7 +146,9 @@ export default function GameDisplay(props: GameDisplayProps) {
                                                 <CardContent className="pb-4">
                                                     <div className="flex flex-col pt-2">
                                                         <p className="text-base">
-                                                            Goal {index}
+                                                            {formatDurationFromSeconds(
+                                                                goal.timeScoredInSeconds
+                                                            )}
                                                         </p>
                                                         <p className="text-base">
                                                             {scoredByName}

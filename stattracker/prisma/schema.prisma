@@ -29,6 +29,7 @@ model Goals {
   gameId                                             String
   scoredByPlayerId                                   String
   assistedById                                       String[]
+  time                                               Int              @default(0) // In seconds
 }
 
 model Penalties {

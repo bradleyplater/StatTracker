@@ -10,4 +10,5 @@ export type PostGoal = {
     assistedBy: string[];
     gameId: string;
     teamId: string;
+    timeInSeconds: number;
 };

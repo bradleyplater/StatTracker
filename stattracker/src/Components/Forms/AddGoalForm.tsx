@@ -55,6 +55,31 @@ export default function AddGoalForm(props: AddGoalFormProps) {
                             )}
                         />
                     </div>
+                    <div className="space-y-1">
+                        <fieldset className="space-y-1 flex flex-row">
+                            <legend className="font-bold">Time of Goal</legend>
+                            <div className="flex gap-5 text-center">
+                                <div>
+                                    <Label htmlFor="minute">Minute</Label>
+                                    <Input
+                                        className="w-16"
+                                        type="number"
+                                        id="minute"
+                                        name="minute"
+                                    />
+                                </div>
+                                <div>
+                                    <Label htmlFor="seconds">Second</Label>
+                                    <Input
+                                        className="w-16"
+                                        type="number"
+                                        id="seconds"
+                                        name="seconds"
+                                    />
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
                     <Input
                         id="gameId"
                         className="hidden"

@@ -9,6 +9,7 @@ export type Goals = {
     gameId: string;
     scoredBy: string;
     assistedBy: string[];
+    timeScoredInSeconds: number;
 };
 
 export type Game = {

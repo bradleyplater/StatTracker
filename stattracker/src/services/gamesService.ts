@@ -35,6 +35,7 @@ export default class GamesService {
                     gameId: goals.gameId,
                     scoredBy: goals.scoredByPlayerId,
                     assistedBy: goals.assistedById,
+                    timeScoredInSeconds: goals.time,
                 };
             }),
             teamCreatedBy: {
@@ -133,6 +134,7 @@ export default class GamesService {
                         gameId: goals.gameId,
                         scoredBy: goals.scoredByPlayerId,
                         assistedBy: [],
+                        timeScoredInSeconds: goals.time,
                     };
                 }),
                 teamCreatedBy: {

@@ -61,6 +61,7 @@ export default class GamesService {
                     gameId: penalty.gameId,
                     duration: penalty.duration,
                     type: penalty.type as Penalties,
+                    penaltyTimeInSeconds: penalty.time,
                     teamId: undefined,
                 };
             }),
@@ -150,6 +151,7 @@ export default class GamesService {
                         gameId: penalty.gameId,
                         duration: penalty.duration,
                         type: penalty.type as Penalties,
+                        penaltyTimeInSeconds: penalty.time,
                         teamId: undefined,
                     };
                 }),
@@ -191,5 +193,35 @@ export default class GamesService {
         }
 
         return goalsScored;
+    }
+
+    /**
+     * Updates goals scored by the opponent team
+     *
+     * @param {string} gameId Id for the game you want to increment assists for
+     * @param {number} numberOfGoals Number of goals the opponent scored
+     * @returns number of goals scored.
+     */
+    static async UpdateGamesGoalsScoredByOpponent(
+        gameId: string,
+        numberOfGoals: number
+    ) {
+        let goalsConceeded: number;
+        try {
+            const response = await prisma.games.update({
+                where: {
+                    id: gameId,
+                },
+                data: {
+                    goalsConceeded: numberOfGoals,
+                },
+            });
+            goalsConceeded = response.goalsConceeded;
+        } catch (error) {
+            console.log('Error: updating goals conceded for game ', error);
+            redirect('/Error');
+        }
+
+        return goalsConceeded;
     }
 }

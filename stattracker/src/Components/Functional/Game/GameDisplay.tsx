@@ -21,6 +21,8 @@ import AddPenaltyForm from '@/Components/Forms/AddPenaltyForm';
 import { addPenaltyAction } from '@/actions/penaltyActions';
 import { Penalties } from '@/enums/Penalties';
 import { formatDurationFromSeconds } from '@/Helpers/numberHelpers';
+import UpdateOpponentsGoalsForm from '@/Components/Forms/UpdateOpponentGoalsForm';
+import { updateOpponentGoalsAction } from '@/actions/gameActions';
 
 export type GameDisplayProps = {
     game: Game;
@@ -35,6 +37,9 @@ export default function GameDisplay(props: GameDisplayProps) {
         addPenaltyAction,
         null
     );
+
+    const [updateOpponentsGoalsFormState, opponentGoalsFormAction] =
+        useFormState(updateOpponentGoalsAction, props.game.goalsConceeded);
 
     const [adminTab, updateAdminTab] = useState('');
     const [gameState, setGameState] = useState(props);
@@ -95,7 +100,7 @@ export default function GameDisplay(props: GameDisplayProps) {
                     <div className="text-xl px-5 py-2 flex justify-center bg-gray-100 inner-shadow rounded-md gap-2">
                         <span>{gameState.game.goalsScored}</span>
                         <span>:</span>
-                        <span>{gameState.game.goalsConceeded}</span>
+                        <span>{updateOpponentsGoalsFormState ?? 0}</span>
                     </div>
                     <span className="text-lg w-1/3 text-center">
                         {gameState.game.opponentTeam}
@@ -104,15 +109,24 @@ export default function GameDisplay(props: GameDisplayProps) {
                 <Separator />
                 <div className="w-full">
                     <Tabs onValueChange={handleAdminTabChange} value={adminTab}>
-                        <TabsList className="grid w-full grid-cols-2">
+                        <TabsList className="grid w-full grid-cols-3">
                             <TabsTrigger value="addGoal">Add Goal</TabsTrigger>
                             <TabsTrigger value="addPims">Add Pims</TabsTrigger>
+                            <TabsTrigger value="updateOpponentsGoals">
+                                Update Opponents Goals
+                            </TabsTrigger>
                         </TabsList>
                         <TabsContent value="addGoal">
                             <AddGoalForm formAction={formAction} />
                         </TabsContent>
                         <TabsContent value="addPims">
                             <AddPenaltyForm formAction={penaltyFormAction} />
+                        </TabsContent>
+                        <TabsContent value="updateOpponentsGoals">
+                            <UpdateOpponentsGoalsForm
+                                formAction={opponentGoalsFormAction}
+                                onSubmitClick={() => handleAdminTabChange('')}
+                            />
                         </TabsContent>
                     </Tabs>
                 </div>
@@ -121,8 +135,8 @@ export default function GameDisplay(props: GameDisplayProps) {
                         <AccordionTrigger className="text-lg">
                             Goals
                         </AccordionTrigger>
-                        <AccordionContent>
-                            <ScrollArea className="w-96 whitespace-nowrap rounded-md border">
+                        <AccordionContent className="w-ull">
+                            <ScrollArea className="w-full whitespace-nowrap rounded-md border">
                                 <div className="flex p-2 gap-5">
                                     {gameState.goals.map((goal, index) => {
                                         const scoredByPlayer =

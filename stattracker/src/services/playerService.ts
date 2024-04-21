@@ -61,7 +61,7 @@ export default class PlayerService {
                     goals: stat.numberOfGoals,
                     assists: stat.numberOfAssists,
                     gamesPlayed: stat.gamesPlayed,
-                    pims: stat.pims,
+                    pims: stat.totalPenaltyDuration,
                     totalPoints: stat.totalPoints,
                 } as PlayerStats;
             }),

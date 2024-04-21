@@ -71,7 +71,7 @@ export default class TeamService {
                                 seasonId: stat.seasonId,
                                 goals: stat.numberOfGoals,
                                 assists: stat.numberOfAssists,
-                                pims: stat.pims,
+                                pims: stat.totalPenaltyDuration,
                                 totalPoints: stat.totalPoints,
                             };
                         }),

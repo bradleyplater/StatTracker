@@ -18,4 +18,9 @@ export enum Penalties {
     TOOM = 'Too Many Men',
     TRIP = 'Tripping',
     UNSP = 'Un-Sportsman like',
+    MISC = 'Misconduct',
+    HIST = 'High Stick',
+    CHECK = 'Checking',
+    THROWSTICK = 'Throwing Stick',
+    ILLEQUIP = 'Illegal Equipment',
 }

@@ -1,72 +1,72 @@
-name: Build and Push Docker Image
+# name: Build and Push Docker Image
 
-on:
-    push:
-        branches:
-            - 'main'
+# on:
+#     push:
+#         branches:
+#             - 'main'
 
-permissions:
-    id-token: write
-    contents: read
-jobs:
-    Deploy-Db-Changes:
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v4
-            - name: Use Node.js
-              uses: actions/setup-node@v3
-              with:
-                  node-version: '20.x'
-            - name: Run database deploy command
-              working-directory: stattracker
-              env:
-                  DATABASE_URL: ${{ secrets.DATABASE_URL}}
-              run: |
-                  npm ci
-                  npm run deploy-db
+# permissions:
+#     id-token: write
+#     contents: read
+# jobs:
+#     Deploy-Db-Changes:
+#         runs-on: ubuntu-latest
+#         steps:
+#             - name: Checkout
+#               uses: actions/checkout@v4
+#             - name: Use Node.js
+#               uses: actions/setup-node@v3
+#               with:
+#                   node-version: '20.x'
+#             - name: Run database deploy command
+#               working-directory: stattracker
+#               env:
+#                   DATABASE_URL: ${{ secrets.DATABASE_URL}}
+#               run: |
+#                   npm ci
+#                   npm run deploy-db
 
-    Docker-Build-Push:
-        runs-on: ubuntu-latest
-        needs: Deploy-Db-Changes
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v4
-            - name: Login to Docker Hub
-              uses: docker/login-action@v3
-              with:
-                  username: ${{ secrets.DOCKERHUB_USERNAME }}
-                  password: ${{ secrets.DOCKERHUB_TOKEN }}
-            - name: Build and push
-              uses: docker/build-push-action@v5
-              with:
-                  context: '{{defaultContext}}:stattracker'
-                  push: true
-                  tags: bradleystattracker/stattracker:latest
-    Deploy-to-ECS:
-        runs-on: ubuntu-latest
-        needs: Docker-Build-Push
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v4
-            - name: configure aws credentials
-              uses: aws-actions/configure-aws-credentials@v4
-              with:
-                  role-to-assume: arn:aws:iam::730335400535:role/GitHubAction-AssumeRoleWithAction
-                  role-session-name: GitHub_to_AWS_via_FederatedOIDC
-                  aws-region: eu-west-2
+#     Docker-Build-Push:
+#         runs-on: ubuntu-latest
+#         needs: Deploy-Db-Changes
+#         steps:
+#             - name: Checkout
+#               uses: actions/checkout@v4
+#             - name: Login to Docker Hub
+#               uses: docker/login-action@v3
+#               with:
+#                   username: ${{ secrets.DOCKERHUB_USERNAME }}
+#                   password: ${{ secrets.DOCKERHUB_TOKEN }}
+#             - name: Build and push
+#               uses: docker/build-push-action@v5
+#               with:
+#                   context: '{{defaultContext}}:stattracker'
+#                   push: true
+#                   tags: bradleystattracker/stattracker:latest
+#     Deploy-to-ECS:
+#         runs-on: ubuntu-latest
+#         needs: Docker-Build-Push
+#         steps:
+#             - name: Checkout
+#               uses: actions/checkout@v4
+#             - name: configure aws credentials
+#               uses: aws-actions/configure-aws-credentials@v4
+#               with:
+#                   role-to-assume: arn:aws:iam::730335400535:role/GitHubAction-AssumeRoleWithAction
+#                   role-session-name: GitHub_to_AWS_via_FederatedOIDC
+#                   aws-region: eu-west-2
 
-            - name: Render Amazon ECS task definition
-              id: render-app-container
-              uses: aws-actions/amazon-ecs-render-task-definition@v1
-              with:
-                  task-definition: ./aws/task-definition.json
-                  container-name: StatTracker
-                  image: docker.io/bradleystattracker/stattracker:latest
+#             - name: Render Amazon ECS task definition
+#               id: render-app-container
+#               uses: aws-actions/amazon-ecs-render-task-definition@v1
+#               with:
+#                   task-definition: ./aws/task-definition.json
+#                   container-name: StatTracker
+#                   image: docker.io/bradleystattracker/stattracker:latest
 
-            - name: Deploy to Amazon ECS service
-              uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-              with:
-                  task-definition: ${{ steps.render-app-container.outputs.task-definition }}
-                  service: Stattracker
-                  cluster: Stattracker-cluster
+#             - name: Deploy to Amazon ECS service
+#               uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+#               with:
+#                   task-definition: ${{ steps.render-app-container.outputs.task-definition }}
+#                   service: Stattracker
+#                   cluster: Stattracker-cluster

@@ -15,6 +15,7 @@ import { createPlayerOptions } from '@/Helpers/playerHelpers';
 import { Button } from '../ui/button';
 import { useContext } from 'react';
 import { GameContext } from '../Functional/Game/GameDisplay';
+import DualNumberInput from '../FormElements/DualNumberInput';
 
 export type AddGoalFormProps = {
     formAction: (payload: FormData) => void;
@@ -53,6 +54,17 @@ export default function AddGoalForm(props: AddGoalFormProps) {
                             options={createPlayerOptions(
                                 gameContext.game.players
                             )}
+                        />
+                    </div>
+                    <div className="space-y-1">
+                        <DualNumberInput
+                            legendLabel="Time of Goal"
+                            firstInputLabel="Minute"
+                            firstInputName="minute"
+                            firstInputid="minute"
+                            secondInputLabel="Seconds"
+                            secondInputName="seconds"
+                            secondInputid="seconds"
                         />
                     </div>
                     <Input

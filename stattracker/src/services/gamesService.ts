@@ -5,6 +5,7 @@ import { Player } from '@/types/playerTypes';
 import { Penalties } from '@/enums/Penalties';
 import PlayerService from './playerService';
 import { getSession } from '@auth0/nextjs-auth0';
+import { GameType } from '@/enums/GameType';
 
 export default class GamesService {
     constructor() {}
@@ -34,6 +35,7 @@ export default class GamesService {
                     gameId: goals.gameId,
                     scoredBy: goals.scoredByPlayerId,
                     assistedBy: goals.assistedById,
+                    timeScoredInSeconds: goals.time,
                 };
             }),
             teamCreatedBy: {
@@ -59,6 +61,7 @@ export default class GamesService {
                     gameId: penalty.gameId,
                     duration: penalty.duration,
                     type: penalty.type as Penalties,
+                    penaltyTimeInSeconds: penalty.time,
                     teamId: undefined,
                 };
             }),
@@ -66,6 +69,8 @@ export default class GamesService {
             isHome: response?.isHome,
             goalsConceeded: response?.goalsConceeded,
             goalsScored: response?.goalsScored,
+            date: response.date,
+            type: response.type,
         };
 
         return game;
@@ -90,6 +95,8 @@ export default class GamesService {
                     },
                     goalsConceeded: 0,
                     goalsScored: 0,
+                    date: game.date,
+                    type: game.type,
                 },
             });
         } catch (error) {
@@ -128,6 +135,7 @@ export default class GamesService {
                         gameId: goals.gameId,
                         scoredBy: goals.scoredByPlayerId,
                         assistedBy: [],
+                        timeScoredInSeconds: goals.time,
                     };
                 }),
                 teamCreatedBy: {
@@ -143,6 +151,7 @@ export default class GamesService {
                         gameId: penalty.gameId,
                         duration: penalty.duration,
                         type: penalty.type as Penalties,
+                        penaltyTimeInSeconds: penalty.time,
                         teamId: undefined,
                     };
                 }),
@@ -150,6 +159,8 @@ export default class GamesService {
                 isHome: game.isHome,
                 goalsConceeded: game.goalsConceeded,
                 goalsScored: game.goalsScored,
+                date: game.date,
+                type: game.type,
             });
         });
 
@@ -182,5 +193,35 @@ export default class GamesService {
         }
 
         return goalsScored;
+    }
+
+    /**
+     * Updates goals scored by the opponent team
+     *
+     * @param {string} gameId Id for the game you want to increment assists for
+     * @param {number} numberOfGoals Number of goals the opponent scored
+     * @returns number of goals scored.
+     */
+    static async UpdateGamesGoalsScoredByOpponent(
+        gameId: string,
+        numberOfGoals: number
+    ) {
+        let goalsConceeded: number;
+        try {
+            const response = await prisma.games.update({
+                where: {
+                    id: gameId,
+                },
+                data: {
+                    goalsConceeded: numberOfGoals,
+                },
+            });
+            goalsConceeded = response.goalsConceeded;
+        } catch (error) {
+            console.log('Error: updating goals conceded for game ', error);
+            redirect('/Error');
+        }
+
+        return goalsConceeded;
     }
 }

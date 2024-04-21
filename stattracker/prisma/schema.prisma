@@ -19,6 +19,8 @@ model Games {
   goalsScored                                       Int
   players                                           Players[]
   penalties                                         Penalties[]
+  date                                              DateTime
+  type                                              String          @default("challenge")   
 }
 
 model Goals {
@@ -27,6 +29,7 @@ model Goals {
   gameId                                             String
   scoredByPlayerId                                   String
   assistedById                                       String[]
+  time                                               Int              @default(0) // In seconds
 }
 
 model Penalties {
@@ -36,6 +39,7 @@ model Penalties {
   playerId                                           String
   type                                               String
   duration                                           Int              @default(0)
+  time                                               Int              @default(0) // In seconds
 }
 
 model Players {

@@ -12,10 +12,16 @@ export async function addGoalAction(prevState: any, formData: FormData) {
         if (name === 'assistedBy') assistedBy.push(value as string);
     });
 
+    const minute = parseInt(formData.get('minute') as string);
+    const seconds = parseInt(formData.get('seconds') as string);
+
+    const goalTimeInSeconds = seconds + minute * 60;
+
     const goalData = {
         gameId: formData.get('gameId') as string,
         scoredBy: formData.get('scoredBy') as string,
         teamId: formData.get('teamId') as string,
+        timeInSeconds: goalTimeInSeconds,
         assistedBy: assistedBy,
     } as PostGoal;
 

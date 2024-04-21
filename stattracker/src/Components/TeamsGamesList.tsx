@@ -9,6 +9,16 @@ type TeamGamesListProps = {
     isAdmin: boolean;
 };
 
+function getBackgroundColour(game: Game) {
+    if (game.goalsScored > game.goalsConceeded) {
+        return 'bg-green-200';
+    } else if (game.goalsScored < game.goalsConceeded) {
+        return 'bg-red-200';
+    } else {
+        return 'bg-amber-200';
+    }
+}
+
 export default function TeamGamesList(props: TeamGamesListProps) {
     return (
         <>
@@ -23,28 +33,39 @@ export default function TeamGamesList(props: TeamGamesListProps) {
                         </Link>
                     </div>
                 )}
-                <div className="bg-teal-100 text-gray-900 py-3 px-7 rounded-xl ">
+                <div className=" text-gray-900 py-3 px-7 ">
                     {props.games.map((game) => {
                         return (
-                            <div className="flex flex-col gap-3" key={game.id}>
-                                <div className="flex flex-row justify-between">
+                            <Link
+                                className={`${getBackgroundColour(
+                                    game
+                                )} flex flex-col gap-3 mb-2 py-3 px-7 rounded-xl hover:outline hover:outline-1 hover:outline-slate-500`}
+                                key={game.id}
+                                href={`/Games/${game.id}`}
+                            >
+                                <div className="flex flex-row justify-center">
                                     <p className="text-l font-bold">
+                                        {game.date.toDateString()} -{' '}
+                                        {game.isHome ? 'Home' : 'Away'} -{' '}
+                                        {game.type.toTitleCase()}
+                                    </p>
+                                </div>
+                                <div className="flex flex-row justify-between">
+                                    <p className="text-l ">
                                         {game.teamCreatedBy.name.toTitleCase()}
                                     </p>
-                                    <p className="text-l font-bold">
-                                        {game.goalsScored}
-                                    </p>
+                                    <p className="text-l">{game.goalsScored}</p>
                                 </div>
 
                                 <div className="flex flex-row justify-between">
-                                    <p className="text-l font-bold">
+                                    <p className="text-l">
                                         {game.opponentTeam.toTitleCase()}
                                     </p>
-                                    <p className="text-l font-bold">
+                                    <p className="text-l">
                                         {game.goalsConceeded}
                                     </p>
                                 </div>
-                            </div>
+                            </Link>
                         );
                     })}
                 </div>

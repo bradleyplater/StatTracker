@@ -21,6 +21,7 @@ export default class GoalService {
             assistedBy: [''],
             scoredBy: '',
             gameId: '',
+            timeScoredInSeconds: 0,
         };
         try {
             let response;
@@ -32,6 +33,7 @@ export default class GoalService {
                         },
                         scoredByPlayerId: goal.scoredBy,
                         assistedById: goal.assistedBy,
+                        time: goal.timeInSeconds,
                     },
                 });
             } else {
@@ -41,6 +43,7 @@ export default class GoalService {
                             connect: { id: goal.gameId },
                         },
                         scoredByPlayerId: goal.scoredBy,
+                        time: goal.timeInSeconds,
                     },
                 });
             }
@@ -49,6 +52,7 @@ export default class GoalService {
             createdGoal.gameId = response.gameId;
             createdGoal.scoredBy = response.scoredByPlayerId;
             createdGoal.assistedBy = response.assistedById;
+            createdGoal.timeScoredInSeconds = response.time;
         } catch (error) {
             console.log('Creating new goal failed: ', error);
             redirect('/Error');

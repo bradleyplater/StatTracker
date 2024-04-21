@@ -16,6 +16,8 @@ export async function addGameAction(prevState: any, formData: FormData) {
         teamCreatedBy: formData.get('teamCreatedBy') as string,
         opponentTeam: formData.get('opponentTeam') as string,
         isHome: (formData.get('location') as string).toLowerCase() === 'home',
+        date: new Date(formData.get('date') as string),
+        type: formData.get('type') as string,
         players: playerIds,
     } as PostGame;
 
@@ -57,4 +59,25 @@ export async function addGameAction(prevState: any, formData: FormData) {
     }
 
     redirect(`/Games/${gameData.id}`);
+}
+
+export async function updateOpponentGoalsAction(
+    prevState: any,
+    formData: FormData
+) {
+    const gameData = {
+        gameId: formData.get('gameId') as string,
+        opponentGoals: parseInt(formData.get('numberOfGoals') as string),
+    };
+
+    try {
+        await GamesService.UpdateGamesGoalsScoredByOpponent(
+            gameData.gameId,
+            gameData.opponentGoals
+        );
+        return gameData.opponentGoals;
+    } catch (error) {
+        console.log('Updating opponent goals failed: ', error);
+        return prevState;
+    }
 }

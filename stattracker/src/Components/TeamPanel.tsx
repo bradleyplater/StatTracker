@@ -47,6 +47,14 @@ export default function TeamPanel(props: TeamPanelProps) {
         }
     }
 
+    const currentDate = new Date();
+
+    props.games.sort(
+        (a, b) =>
+            Math.abs(a.date.getTime() - currentDate.getTime()) -
+            Math.abs(b.date.getTime() - currentDate.getTime())
+    );
+
     return (
         <>
             <div className="text-gray-900 flex flex-col">
